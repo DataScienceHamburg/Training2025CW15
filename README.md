@@ -5,3 +5,9 @@ Das sind die Trainingsunterlagen für den Kurs "Generative KI mit Python".
 ## Links
 
 - [Repository für die Übungen](https://github.com/DataScienceHamburg/Training2025CW15)
+
+- [Groq Console](https://console.groq.com/)
+
+- [Gemini API](https://aistudio.google.com/)
+
+- [OpenAI Console](https://platform.openai.com/api-keys)
