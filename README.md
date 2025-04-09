@@ -11,3 +11,5 @@ Das sind die Trainingsunterlagen für den Kurs "Generative KI mit Python".
 - [Gemini API](https://aistudio.google.com/)
 
 - [OpenAI Console](https://platform.openai.com/api-keys)
+
+- [GROQ Models](https://console.groq.com/docs/models)
