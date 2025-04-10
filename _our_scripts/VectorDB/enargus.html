@@ -1,0 +1,3124 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+	<meta charset="utf-8">
+	<title>EnArgus</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" type="image/png" href="/images/favicon.png">
+	<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+ 
+	<meta property="og:title" content="">
+	<meta property="og:type" content="">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
+
+	<style>
+	svg.waiting { height: 1em; width: auto; animation: 3.0s linear infinite svg-waiting; max-width: 100px; }
+
+	@keyframes svg-waiting { 0% { transform: rotateZ(0deg); } 100% { transform: rotateZ(360deg) } }
+
+	circle.waiting {
+		animation: 2.0s ease-in-out infinite both circle-waiting;
+		display: block;
+		fill: transparent;
+		stroke: rgb(63, 89, 117);
+		stroke-linecap: round;
+		stroke-dasharray: 283;
+		stroke-dashoffset: 280;
+		stroke-width: 10px;
+		transform-origin: 50% 50%;
+	}
+
+	@keyframes circle-waiting {
+		0%, 25% { stroke-dashoffset: 280; transform: rotate(0); }
+		50%,
+		75% { stroke-dashoffset: 75; transform: rotate(45deg); }
+		100% { stroke-dashoffset: 280; transform: rotate(360deg); }
+	}
+	</style>
+
+<!--	<link rel="manifest" href="site.webmanifest">-->
+<!--	<link rel="apple-touch-icon" href="icon.png">-->
+	<!-- Place favicon.ico in the root directory -->
+
+	<link rel="stylesheet" href="/bin/css/enargus.css">
+	<link rel="stylesheet" href="/bin/leaflet/leaflet.css">
+	<link rel="stylesheet" href="/bin/leaflet/leaflet.markercluster.css">
+
+	<meta name="theme-color" content="#fafafa">
+
+	<script type="text/javascript">
+		var LANG_TRANSLATIONS =
+		{
+			'name': {
+				'de': "Deutsch",
+				'en': "English",
+				'es': "EspaÃ±ol",
+				'fr': "FranÃ§ais",
+				'it': "Italiano",
+				'pt': "PortuguÃªs",
+				'gr': "ÎÎ»Î»Î·Î½Î¹ÎºÎ®",
+				'jp': "ãã¾ã¨" },
+			'number_format': {
+				'de': "de-DE",
+				'en': "en-US",
+				'es': "es-ES",
+				'fr': "fr-FR",
+				'it': "it-IT",
+				'pt': "pt-PT" },
+			'LANG_T1': {
+				'de': "7.365 Projekte",
+				'en': "7,365 projects",
+				'es': "7.365 proyectos",
+				'fr': "7.365 projets",
+				'it': "7.365 progetti",
+				'pt': "7.365 projectos" },
+			'LANG_B1': {
+				'de': "wurden im Jahr 2022 im 7. Energieforschungsprogramm gefÃ¶rdert",
+				'en': "funded in the 7th Energy Research Programme in 2022",
+				'es': "fueron financiados en 2022 en el 7Âº Programa de InvestigaciÃ³n en EnergÃ­a",
+				'fr': "ont Ã©tÃ© financÃ©s en 2022 dans le cadre du 7e programme de recherche sur l'Ã©nergie",
+				'it': "sono stati finanziati nel 2022 nel 7Â° programma di ricerca sull'energia",
+				'pt': "foram financiados em 2022 no 7Âº Programa de InvestigaÃ§Ã£o EnergÃ©tica" },
+			'LANG_T2': {
+				'de': "1,486 Mrd. â¬",
+				'en': "1,486 million â¬",
+				'es': "1.486 millones de â¬",
+				'fr': "1,486 milliard â¬",
+				'it': "1,486 miliardi di â¬",
+				'pt': "1,486 biliÃµes de â¬" },
+			'LANG_B2': {
+				'de': "GesamtfÃ¶rdermittel in 2022 im 7. Energieforschungsprogramm",
+				'en': "Total funding in the 7th Energy Research Programme in 2022",
+				'es': "FinanciaciÃ³n total en 2022 en el 7Âº Programa de InvestigaciÃ³n en EnergÃ­a",
+				'fr': "Total des subventions en 2022 dans le 7e programme de recherche sur l'Ã©nergie",
+				'it': "Finanziamento totale nel 2022 nel 7Â° programma di ricerca sull'energia",
+				'pt': "Financiamento total em 2022 no 7Âº Programa de InvestigaÃ§Ã£o EnergÃ©tica" },
+			'LANG_T3': {
+				'de': "75%",
+				'en': "75%",
+				'es': "75%",
+				'fr': "75%",
+				'it': "75%",
+				'pt': "75%" },
+			'LANG_B3': {
+				'de': "FÃ¶rdermittelanstieg im Vergleich zu 2014",
+				'en': "rise in funding compared to 2014",
+				'es': "Aumento de la financiaciÃ³n en comparaciÃ³n con 2014",
+				'fr': "Augmentation des subventions par rapport Ã  2014",
+				'it': "Aumento dei finanziamenti rispetto al 2014",
+				'pt': "Aumento do financiamento em relaÃ§Ã£o a 2014" },
+			'LANG_T4': {
+				'de': "390 Mio. â¬",
+				'en': "390 million â¬",
+				'es': "390 millones de â¬",
+				'fr': "390 millions â¬",
+				'it': "390 milioni di â¬",
+				'pt': "390 milhÃµes de â¬" },
+			'LANG_B4': {
+				'de': "Eigenanteil von Unternehmen an neu bewilligten Forschungs- und Entwicklungsprojekten im Jahr 2022",
+				'en': "funding from companies towards newly approved research and development projects in 2022",
+				'es': "ParticipaciÃ³n propia de las empresas en los nuevos proyectos de investigaciÃ³n y desarrollo aprobados en 2022",
+				'fr': "Part propre des entreprises dans les nouveaux projets de recherche et de dÃ©veloppement approuvÃ©s en 2022",
+				'it': "Quota propria delle aziende in progetti di ricerca e sviluppo appena approvati nel 2022",
+				'pt': "ParticipaÃ§Ã£o prÃ³pria de empresas em projectos de investigaÃ§Ã£o e desenvolvimento recentemente aprovados em 2022" },
+			'LANG_Sprache': {
+				'de': "Sprache",
+				'en': "Language",
+				'es': "Idioma",
+				'fr': "Langue",
+				'it': "Lingua",
+				'pt': "Idioma" },
+			'LANG_Suche': {
+				'de': "Suche",
+				'en': "Search",
+				'es': "BÃºsqueda",
+				'fr': "Recherche",
+				'it': "Ricerca",
+				'pt': "Pesquisa" },
+			'LANG_Suchen': {
+				'de': "Suchen",
+				'en': "Search",
+				'es': "Busque en",
+				'fr': "Rechercher",
+				'it': "Ricerca",
+				'pt': "Pesquisa" },
+			'LANG_Auswahl_lÃ¶schen': {
+				'de': "Auswahl lÃ¶schen",
+				'en': "Clear selection",
+				'es': "Borrar la selecciÃ³n",
+				'fr': "Supprimer la sÃ©lection",
+				'it': "Cancellare la selezione",
+				'pt': "Eliminar selecÃ§Ã£o" },
+			'LANG_FÃ¶rderdaten': {
+				'de': "FÃ¶rderdaten",
+				'en': "Funding Data",
+				'es': "Datos",
+				'fr': "DonnÃ©es",
+				'it': "Dati",
+				'pt': "Dados" },
+			'LANG_Wiki': {
+				'de': "Wiki",
+				'en': "Wiki",
+				'es': "Wiki",
+				'fr': "Wiki",
+				'it': "Wiki",
+				'pt': "Wiki" },
+			'LANG_Ãber_EnArgus': {
+				'de': "Ãber EnArgus",
+				'en': "About EnArgus",
+				'es': "Sobre EnArgus",
+				'fr': "Ã propos d'EnArgus",
+				'it': "Su EnArgus",
+				'pt': "Sobre EnArgus" },
+			'LANG_Erweiterte_Suche': {
+				'de': "Erweiterte Suche",
+				'en': "Advanced Search",
+				'es': "BÃºsqueda Avanzada",
+				'fr': "Recherche AvancÃ©e",
+				'it': "Ricerca Avanzata",
+				'pt': "Pesquisa AvanÃ§ada" },
+			'LANG_EnArgus_Infotext': {
+				'de': "Das Bundesministerium fÃ¼r Wirtschaft und Klimaschutz stellt mit EnArgus ein Internet-Portal bereit, das Ã¼ber laufende und abgeschlossene Forschungsvorhaben rund um das Thema Energieforschung informiert.",
+				'en': "With EnArgus, the Federal Ministry of Economic Affairs and Climate Action provides an Internet portal that provides information on current and completed research projects related to energy research.",
+				'es': "Con EnArgus, el Ministerio Federal de EconomÃ­a y ProtecciÃ³n del Clima ofrece un portal de Internet que proporciona informaciÃ³n sobre proyectos de investigaciÃ³n en curso y terminados en el Ã¡mbito de la investigaciÃ³n energÃ©tica.",
+				'fr': "Avec EnArgus, le MinistÃ¨re fÃ©dÃ©ral de l'Ãconomie et de la Protection du Climat propose un portail Internet qui fournit des informations sur les projets de recherche en cours et terminÃ©s dans le domaine de la recherche Ã©nergÃ©tique.",
+				'it': "Con EnArgus, il Ministero Federale dell'Economia e dell'Energia mette a disposizione un portale Internet che fornisce informazioni sui progetti di ricerca in corso e completati nel campo della ricerca energetica.",
+				'pt': "Com o EnArgus, o MinistÃ©rio Federal dos Assuntos EconÃ³micos e da ProtecÃ§Ã£o ClimÃ¡tica fornece um portal na Internet que fornece informaÃ§Ãµes sobre projectos de investigaÃ§Ã£o actuais e concluÃ­dos relacionados com a investigaÃ§Ã£o energÃ©tica." },
+			'LANG_IE11_Warnung': {
+				'de': "Microsoft Internet Explorer 11 wird von dieser Webseite nicht mehr unterstÃ¼tzt.",
+				'en': "Microsoft Internet Explorer 11 is no longer supported by this website.",
+				'es': "Microsoft Internet Explorer 11 ya no es compatible con este sitio web.",
+				'fr': "Microsoft Internet Explorer 11 n'est plus supportÃ© par ce site.",
+				'it': "Microsoft Internet Explorer 11 non Ã¨ piÃ¹ supportato da questo sito web.",
+				'pt': "O Microsoft Internet Explorer 11 jÃ¡ nÃ£o Ã© suportado por este sÃ­tio Web." },
+			'LANG_FÃ¶rderzeitraum': {
+				'de': "FÃ¶rderzeitraum",
+				'en': "Grant period",
+				'es': "PerÃ­odo de concesiÃ³n",
+				'fr': "PÃ©riode d'octroi",
+				'it': "Periodo di concessione",
+				'pt': "PerÃ­odo de financiamento" },
+			'LANG_Zuwendungsgeber': {
+				'de': "Zuwendungsgeber",
+				'en': "Funded by",
+				'es': "Proveedor de subvenciones",
+				'fr': "Bailleur de fonds",
+				'it': "Fornitore di sovvenzioni",
+				'pt': "Fornecedor de subvenÃ§Ãµes" },
+			'LANG_Bewilligte_Summe': {
+				'de': "Bewilligte Summe",
+				'en': "Appropriated budget",
+				'es': "Presupuesto aprobado",
+				'fr': "Budget allouÃ©",
+				'it': "Budget appropriato",
+				'pt': "Soma aprovada" },
+			'LANG_AusfÃ¼hrende_Stelle': {
+				'de': "AusfÃ¼hrende Stelle",
+				'en': "Executing entity",
+				'es': "Entidad ejecutora",
+				'fr': "EntitÃ© d'exÃ©cution",
+				'it': "EntitÃ  esecutrice",
+				'pt': "Entidade executante" },
+			'LANG_FÃ¶rderkennzeichen': {
+				'de': "FÃ¶rderkennzeichen",
+				'en': "Reference number",
+				'es': "NÃºmero de referencia",
+				'fr': "NumÃ©ro d'ordre",
+				'it': "Numero di riferimento",
+				'pt': "NÃºmero de referÃªncia" },
+			'LANG_Leistungsplansystematik': {
+				'de': "Leistungsplansystematik",
+				'en': "R&D planning category",
+				'es': "CategorÃ­a de planificaciÃ³n de I+D",
+				'fr': "CatÃ©gorie de planification R&D",
+				'it': "Categoria di pianificazione R&S",
+				'pt': "Categoria de planeamento de I&D" },
+			'LANG_ProjekttrÃ¤ger': {
+				'de': "ProjekttrÃ¤ger",
+				'en': "Project management agency",
+				'es': "Agencia de gestiÃ³n de proyectos",
+				'fr': "Porteur du projet",
+				'it': "Agenzia di gestione del progetto",
+				'pt': "AgÃªncia de GestÃ£o de Projectos" },
+			'LANG_FÃ¶rderprogramm': {
+				'de': "FÃ¶rderprogramm",
+				'en': "Research programme",
+				'es': "Programa de apoyo",
+				'fr': "Programme de soutien",
+				'it': "Programma di sostegno",
+				'pt': "Programa de apoio" },
+			'LANG_Kurzbeschreibung': {
+				'de': "Kurzbeschreibung",
+				'en': "Summary",
+				'es': "Breve descripciÃ³n",
+				'fr': "BrÃ¨ve description",
+				'it': "Progetti sul tema",
+				'pt': "Breve descriÃ§Ã£o" },
+			'LANG_FÃ¶rderprojekte_zum_Thema': {
+				'de': "FÃ¶rderprojekte zum Thema",
+				'en': "Projects on the subject",
+				'es': "Proyectos sobre el tema",
+				'fr': "Projets sur le thÃ¨me",
+				'it': "Progetti sull'argomento",
+				'pt': "Projectos sobre o tema" },
+			'LANG_FÃ¶rderprojekte': {
+				'de': "FÃ¶rderprojekte",
+				'en': "Funded projects",
+				'es': "Proyectos financiados",
+				'fr': "Projets financÃ©s",
+				'it': "Progetti finanziati",
+				'pt': "Projectos financiados" },
+			'LANG_gefunden': {
+				'de': "gefunden",
+				'en': "found",
+				'es': "encontrados",
+				'fr': "trouvÃ©s",
+				'it': "trovati",
+				'pt': "encontrados" },
+			'LANG_Sortierung_nach_Relevanz': {
+				'de': "Sortierung nach Relevanz",
+				'en': "Sort by relevance",
+				'es': "Clasificar por relevancia",
+				'fr': "Tri par pertinence",
+				'it': "Ordinamento per rilevanza",
+				'pt': "Ordenar por relevÃ¢ncia" },
+			'LANG_Ort': {
+				'de': "Ort",
+				'en': "Place",
+				'es': "Lugar",
+				'fr': "Lieu",
+				'it': "Posto",
+				'pt': "Lugar" },
+			'LANG_Beginn': {
+				'de': "Beginn",
+				'en': "Start",
+				'es': "Comienza",
+				'fr': "DÃ©marrer",
+				'it': "Iniziare",
+				'pt': "InÃ­cio" },
+			'LANG_Ende': {
+				'de': "Ende",
+				'en': "End",
+				'es': "Fin",
+				'fr': "Fin",
+				'it': "Fine",
+				'pt': "Fim" },
+			'LANG_Verbundvorhaben': {
+				'de': "Verbundvorhaben",
+				'en': "Collaborative project",
+				'es': "Proyecto conjunto",
+				'fr': "Projet conjoint",
+				'it': "Progetto congiunto",
+				'pt': "Projecto conjunto" },
+			'LANG_Bundesland': {
+				'de': "Bundesland",
+				'en': "Federal State",
+				'es': "Estado federal",
+				'fr': "Ãtat fÃ©dÃ©ral",
+				'it': "Stato federale",
+				'pt': "Estado federal" },
+			'LANG_Baden_WÃ¼rttemberg': {
+				'de': "Baden-WÃ¼rttemberg",
+				'en': "Baden-WÃ¼rttemberg",
+				'es': "Baden-WÃ¼rttemberg",
+				'fr': "Baden-WÃ¼rttemberg",
+				'it': "Baden-WÃ¼rttemberg",
+				'pt': "Baden-WÃ¼rttemberg" },
+			'LANG_Bayern': {
+				'de': "Bayern",
+				'en': "Bavaria",
+				'es': "Baviera",
+				'fr': "BaviÃ¨re",
+				'it': "Baviera",
+				'pt': "Baviera" },
+			'LANG_Berlin': {
+				'de': "Berlin",
+				'en': "Berlin",
+				'es': "BerlÃ­n",
+				'fr': "Berlin",
+				'it': "Berlino",
+				'pt': "Berlim" },
+			'LANG_Brandenburg': {
+				'de': "Brandenburg",
+				'en': "Brandenburg",
+				'es': "Brandenburgo",
+				'fr': "Brandebourg",
+				'it': "Brandeburgo",
+				'pt': "Brandenburgo" },
+			'LANG_Bremen': {
+				'de': "Bremen",
+				'en': "Bremen",
+				'es': "Bremen",
+				'fr': "BrÃªme",
+				'it': "Brema",
+				'pt': "Bremen" },
+			'LANG_Hamburg': {
+				'de': "Hamburg",
+				'en': "Hamburg",
+				'es': "Hamburgo",
+				'fr': "Hambourg",
+				'it': "Amburgo",
+				'pt': "Hamburgo" },
+			'LANG_Hessen': {
+				'de': "Hessen",
+				'en': "Hesse",
+				'es': "Hesse",
+				'fr': "Hesse",
+				'it': "Assia",
+				'pt': "Hesse" },
+			'LANG_Mecklenburg_Vorpommern': {
+				'de': "Mecklenburg-Vorpommern",
+				'en': "Mecklenburg-Western Pomerania",
+				'es': "Mecklemburgo-Pomerania Occidental",
+				'fr': "Mecklembourg-PomÃ©ranie occidentale",
+				'it': "Meclemburgo-Pomerania occidentale",
+				'pt': "Mecklenburg-Vorpommern" },
+			'LANG_Niedersachsen': {
+				'de': "Niedersachsen",
+				'en': "Lower Saxony",
+				'es': "Baja Sajonia",
+				'fr': "Basse-Saxe",
+				'it': "Bassa Sassonia",
+				'pt': "Baixa SaxÃ³nia" },
+			'LANG_Nordrhein_Westfalen': {
+				'de': "Nordrhein-Westfalen",
+				'en': "North Rhine-Westphalia",
+				'es': "Renania del Norte-Westfalia",
+				'fr': "RhÃ©nanie-du-Nord-Westphalie",
+				'it': "Nord Reno-Westfalia",
+				'pt': "RenÃ¢nia do Norte-VestefÃ¡lia" },
+			'LANG_Rheinland_Pfalz': {
+				'de': "Rheinland-Pfalz",
+				'en': "Rhineland-Palatinate",
+				'es': "Renania-Palatinado",
+				'fr': "RhÃ©nanie-Palatina",
+				'it': "Renania-Palatinato",
+				'pt': "RenÃ¢nia-Palatinado" },
+			'LANG_Saarland': {
+				'de': "Saarland",
+				'en': "Saarland",
+				'es': "Sarre",
+				'fr': "Sarre",
+				'it': "Saarland",
+				'pt': "Sarre" },
+			'LANG_Sachsen': {
+				'de': "Sachsen",
+				'en': "Saxony",
+				'es': "Sajonia",
+				'fr': "Saxe",
+				'it': "Sassonia",
+				'pt': "SaxÃ³nia" },
+			'LANG_Sachsen_Anhalt': {
+				'de': "Sachsen-Anhalt",
+				'en': "Saxony-Anhalt",
+				'es': "Saxe-Anhalt",
+				'fr': "Sassonia-Anhalt",
+				'it': "Sassonia-Anhalt",
+				'pt': "SaxÃ³nia-Anhalt" },
+			'LANG_Schleswig-Holstein': {
+				'de': "Schleswig-Holstein",
+				'en': "Schleswig-Holstein",
+				'es': "Schleswig-Holstein",
+				'fr': "Schleswig-Holstein",
+				'it': "Schleswig-Holstein",
+				'pt': "Schleswig-Holstein" },
+			'LANG_ThÃ¼ringen': {
+				'de': "ThÃ¼ringen",
+				'en': "Thuringia",
+				'es': "Turingia",
+				'fr': "Thuringe",
+				'it': "Turingia",
+				'pt': "TurÃ­ngia" },
+			'LANG_Impressum': {
+				'de': "Impressum",
+				'en': "Imprint",
+				'es': "Imprenta",
+				'fr': "Mentions lÃ©gales",
+				'it': "Impronta",
+				'pt': "ImpressÃ£o" },
+			'LANG_Datenschutz': {
+				'de': "Datenschutz",
+				'en': "Privacy policy",
+				'es': "ProtecciÃ³n de datos",
+				'fr': "Protection des donnÃ©es",
+				'it': "Protezione dati",
+				'pt': "ProtecÃ§Ã£o de dados" },
+			'LANG_Synonyme': {
+				'de': "Synonyme",
+				'en': "Synonyms",
+				'es': "SinÃ³nimos",
+				'fr': "Synonymes",
+				'it': "Sinonimi",
+				'pt': "SinÃ³nimos" },
+			'LANG_Ãbersetzungen': {
+				'de': "Ãbersetzungen",
+				'en': "Translations",
+				'es': "Traducciones",
+				'fr': "Traductions",
+				'it': "Traduzioni",
+				'pt': "TraduÃ§Ãµes" },
+			'LANG_wikilizenz': {
+				'de': "Die Artikel des EnArgus Wiki unterliegen der Lizenz",
+				'en': "The articles of the EnArgus Wiki are subject to the licence",
+				'es': "Los artÃ­culos de la Wiki de EnArgus estÃ¡n sujetos a la licencia",
+				'fr': "Les articles du Wiki EnArgus sont soumis Ã  la licence",
+				'it': "Gli articoli di EnArgus Wiki sono soggetti alla licenza",
+				'pt': "Os artigos da Wiki EnArgus estÃ£o sujeitos Ã  licenÃ§a" },
+			'LANG_wikilizenzbez': {
+				'de': "Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 3.0 Deutschland",
+				'en': "Creative Commons Attribution - Distribution under the same conditions 3.0 Germany",
+				'es': "Creative Commons AtribuciÃ³n - DistribuciÃ³n bajo las mismas condiciones 3.0 Alemania",
+				'fr': "Creative Commons Attribution - Distribution sous les mÃªmes conditions 3.0 Allemagne",
+				'it': "Creative Commons Attribuzione - Distribuzione alle stesse condizioni 3.0 Germania",
+				'pt': "Creative Commons AtribuiÃ§Ã£o - DistribuiÃ§Ã£o sob as mesmas condiÃ§Ãµes 3.0 Alemanha" },
+			'LANG_BBEF2023': {
+				'de': "Bundesbericht Energieforschung 2023",
+				'en': "2023 Federal Government Report on Energy Research",
+				'es': "Informe del Gobierno Federal de 2023 sobre la investigaciÃ³n energÃ©tica",
+				'fr': "Rapport 2023 du gouvernement fÃ©dÃ©ral sur la recherche Ã©nergÃ©tique",
+				'it': "2023 Rapporto del governo federale sulla ricerca energetica",
+				'pt': "2023 RelatÃ³rio do Governo Federal sobre InvestigaÃ§Ã£o EnergÃ©tica" },
+			'LANG_zurÃ¼ck': {
+				'de': "zurÃ¼ck",
+				'en': "back",
+				'es': "atrÃ¡s",
+				'fr': "retour",
+				'it': "retro",
+				'pt': "atrÃ¡s" },
+			'LANG_Wiki_von_A_B': {
+				'de': "Wiki A-Z",
+				'en': "Wiki A-Z",
+				'es': "Wiki A-Z",
+				'fr': "Wiki A-Z",
+				'it': "Wiki A-Z",
+				'pt': "Wiki A-Z" },
+			'LANG_Zuletzt_gesuchte_Wiki_EintrÃ¤ge': {
+				'de': "Zuletzt gesuchte Wiki-EintrÃ¤ge",
+				'en': "Recently searched wiki entries",
+				'es': "Entradas de la wiki buscadas recientemente",
+				'fr': "EntrÃ©es wiki rÃ©cemment recherchÃ©es",
+				'it': "Ultime voci Wiki ricercate",
+				'pt': "Ãltimas entradas Wiki pesquisadas" },
+			'LANG_Mittelabfluss': {
+				'de': "Mittelabfluss",
+				'en': "Actual outlays",
+				'es': "Gastos",
+				'fr': "DÃ©penses",
+				'it': "Spese",
+				'pt': "Despesas" },
+			'LANG_in_Millionen_Euro': {
+				'de': "in Millionen Euro",
+				'en': "in millions of euros",
+				'es': "en millones de euros",
+				'fr': "en millions d'euros",
+				'it': "in milioni di euro",
+				'pt': "em milhÃµes de euros" },
+			'LANG_Lade_weitere_Projekte': {
+				'de': "Lade weitere Projekte",
+				'en': "Loading more projects",
+				'es': "Cargando mÃ¡s proyectos",
+				'fr': "Chargement d'autres projets",
+				'it': "Carica altri progetti",
+				'pt': "Carregar mais projectos" },
+			'LANG_Suche_in_FÃ¶rderprojekten': {
+				'de': "Suche in FÃ¶rderprojekten...",
+				'en': "Search for projects...",
+				'es': "Buscar en proyectos...",
+				'fr': "Recherche dans les projets...",
+				'it': "Cerca in progetti...",
+				'pt': "Pesquisa em projectos..." },
+			'LANG_Suche_im_Wiki': {
+				'de': "Suche im Wiki...",
+				'en': "Search the Wiki...",
+				'es': "Buscar en la Wiki",
+				'fr': "Recherche dans le Wiki...",
+				'it': "Cerca nel Wiki...",
+				'pt': "Pesquisa no Wiki..." },
+			'LANG_Weitere_Informationen': {
+				'de': "Weitere Informationen",
+				'en': "More information",
+				'es': "MÃ¡s informaciÃ³n",
+				'fr': "Plus d'informations",
+				'it': "Ulteriori informazioni",
+				'pt': "Mais informaÃ§Ãµes" },
+			'LANG_Abschlussbericht_TIB': {
+				'de': "Abschlussbericht bereitgestellt von der Technischen Informationsbibliothek (TIB)",
+				'en': "Final Report hosted by the Technische Informationsbibliothek (TIB)",
+				'es': "Informe final acogido por la Technische Informationsbibliothek (TIB)",
+				'fr': "Rapport final hÃ©bergÃ© par la Technische Informationsbibliothek (TIB)",
+				'it': "Rapporto finale fornito dalla Biblioteca Nazionale Tedesca di Scienza e Tecnologia (TIB)",
+				'pt': "RelatÃ³rio final fornecido pela Biblioteca Nacional AlemÃ£ de CiÃªncia e Tecnologia (TIB)" }
+		};
+
+		const ENARGUS_BROWSER_LANG = navigator.language.substring(0, 2).toLowerCase();
+		const ENARGUS_MAX_CACHE_SIZE = 20;
+		const ENARGUS_MAX_CACHE_AGE = 3600000; // one hour
+		const ENARGUS_MAX_SEARCH = 100;
+		const ENARGUS_MAX_REQUEST_TIMEOUT = 120000; // two minutes
+		const ENARGUS_MAX_WIKI_HISTORY_SIZE = 10;
+
+		var ENARGUS_LANG = "de";
+		var ENARGUS_LANG_NUMBER_FORMAT = "de-DE";
+		var ENARGUS_QUERY_LANG = "de";
+		var ENARGUS_TAB = "ENARGUS_TAB_Main";
+		var ENARGUS_HEADER = "ENARGUS_HEADER_Suche";
+		var ENARGUS_ACTIVE_MENU = null;
+		var ENARGUS_HTTP_BASE = "/";
+		var ENARGUS_CACHE = {};
+		var ENARGUS_CURRENT_URL = "";
+		var ENARGUS_ADVANCED_SEARCH = { };
+		var ENARGUS_SEARCH_REQUEST = "";
+		var ENARGUS_WIKI_HISTORY = [];
+		var ENARGUS_WIKI_LIST = [];
+		var ENARGUS_WIKI_LIST_LANG = "";
+		var ENARGUS_CURRENT_SEARCH_RESULT = null;
+		var ENARGUS_DATA = null;
+		var ENARGUS_MAP = null;
+		var ENARGUS_MAP_LAYERS = null;
+
+		function enargusChangeState(state, title, url)
+		{
+			ENARGUS_CURRENT_URL = url;
+			document.title = title;
+			history.pushState(ENARGUS_LANG, title, url);
+			console.log("enargusChangeState: " + url);
+		}
+
+		function enargusJSONRequest(requeststring, successfunction, progressfunction, errorfunction)
+		{
+			var request = new XMLHttpRequest();
+			request.open('GET', "https://www.enargus.de/pub/bscw.cgi/REST/" + requeststring);
+			request.responseType = 'json';
+			request.timeout = ENARGUS_MAX_REQUEST_TIMEOUT;
+			if(successfunction != null)
+				request.onload = function() { successfunction(request.response); };
+			if(progressfunction != null)
+				request.onprogress = progressfunction;
+			if(errorfunction != null)
+			{
+				request.onerror = errorfunction;
+				request.ontimeout = errorfunction;
+			}
+			request.send();
+		}
+
+		function enargusCacheRequest(cachename, str, successfunction, errorfunction)
+		{
+			const now = Date.now();
+
+			if(!(cachename in ENARGUS_CACHE))
+				ENARGUS_CACHE[cachename] = { };
+
+			var cache = ENARGUS_CACHE[cachename];
+
+			// console.log("Cache Request: " + str);
+
+			if(str in cache)
+			{
+				var result = cache[str];
+
+				// console.log("Cache Hit: " + str);
+
+				if((result.timestamp + ENARGUS_MAX_CACHE_AGE) > now)
+				{
+					var request = new XMLHttpRequest(); // cache debugging
+					request.open('HEAD', "https://www.enargus.de/cache/" + str);
+					request.timeout = ENARGUS_MAX_REQUEST_TIMEOUT;
+					request.onerror = function() { };
+					request.ontimeout = function() { };
+					request.send();
+
+					successfunction(result.data);
+					return;
+				}
+				else
+				{
+					delete cache[str];
+					// console.log("Cache Delete: " + str);
+				}
+			}
+
+			enargusJSONRequest(str, function(result)
+			{
+				var keys = Object.keys(cache);
+				if(keys.length >= ENARGUS_MAX_CACHE_SIZE)
+				{
+					var oldestkey = "";
+					var oldest = now;
+					
+					for(var key in keys)
+					{
+						if(cache[str].timestamp < oldest)
+						{
+							oldest = cache[str].timestamp;
+							oldestkey = key;
+						}
+					}
+
+					delete cache[oldestkey];
+
+					// console.log("Cache Delete: " + oldestkey);
+				}
+
+				// console.log("Cache Insert: " + str);
+
+				cache[str] = { timestamp: now, data: result };
+
+				successfunction(result);
+			}, null, errorfunction);
+		}
+
+		function enargusTextTranslate(str)
+		{
+			for(label in LANG_TRANSLATIONS)
+			{
+				if(str == LANG_TRANSLATIONS[label]['de'])
+					return LANG_TRANSLATIONS[label][ENARGUS_LANG];
+			}
+
+			return str;
+		}
+
+		function enargusTranslate(id)
+		{
+			if(id in LANG_TRANSLATIONS)
+				return LANG_TRANSLATIONS[id][ENARGUS_LANG];
+			// console.log("Cannot find translation for id '" + id + "'");
+			return "";
+		}
+
+		function enargusTranslateSpan(id)
+		{
+			return "<span name='" + id + "'>" + enargusTranslate(id) + "</span>";
+		}
+
+		function enargusLanguageRecursive(node, lang)
+		{
+			for(var child of node)
+			{
+				if(child.hasAttribute("name"))
+				{
+					const name = child.getAttribute("name");
+					if(name in LANG_TRANSLATIONS)
+					{
+						if(child.hasAttribute("placeholder"))
+							child.setAttribute("placeholder", LANG_TRANSLATIONS[name][lang]);
+						else
+							child.innerHTML = LANG_TRANSLATIONS[name][lang];
+					}
+				}
+				
+				enargusLanguageRecursive(child.getElementsByTagName("*"), lang);
+			}
+		}
+
+		function enargusLanguage(lang)
+		{
+			var languagelist = document.getElementById("current-language");
+
+			lang = lang.toLowerCase();
+
+			ENARGUS_LANG_NUMBER_FORMAT = LANG_TRANSLATIONS["number_format"][lang];
+	
+			enargusLanguageRecursive(document.documentElement.getElementsByTagName("*"), lang);
+
+			ENARGUS_LANG = lang;
+			ENARGUS_QUERY_LANG = ENARGUS_LANG; // default may change in enargusWhereAmI
+
+			for(var l of languagelist.getElementsByTagName("span"))
+			{
+				if(l.innerText.toLowerCase() == lang)
+					l.classList.add("selected");
+				else
+					l.classList.remove("selected");
+			}
+
+			enargusWhereAmI();
+		}
+
+		function enargusSwitchHeader(headerid)
+		{
+			if(headerid == ENARGUS_HEADER)
+				return;
+		
+			var curheader = document.getElementById(ENARGUS_HEADER);
+			var newheader = document.getElementById(headerid);
+			var navsuche = document.getElementById('ENARGUS_Nav_Suche');
+			var navdaten = document.getElementById('ENARGUS_Nav_FÃ¶rderdaten');
+			var navwiki = document.getElementById('ENARGUS_Nav_Wiki');
+
+			navsuche.classList.remove("active");
+			navdaten.classList.remove("active");
+			navwiki.classList.remove("active");
+
+			document.body.classList.remove("foerderprojekte", "start-seite", "foerderdaten", "wiki");
+
+			switch(headerid)
+			{
+				case 'ENARGUS_HEADER_Suche':
+					document.body.classList.add("foerderprojekte", "start-seite");
+					navsuche.classList.add("active");
+					break;
+				case 'ENARGUS_HEADER_Daten':
+					document.body.classList.add("foerderdaten");
+					navdaten.classList.add("active");
+					break;
+				case 'ENARGUS_HEADER_Wiki':
+					document.body.classList.add("wiki");
+					navwiki.classList.add("active");
+					break;
+				case 'ENARGUS_HEADER_Extra':
+					document.body.classList.add("extra");
+					navwiki.classList.add("active");
+					break;
+			}
+
+			curheader.hidden = true;
+			newheader.hidden = false;
+
+			ENARGUS_HEADER = headerid;
+		}
+		
+		function enargusGo(nav)
+		{
+			var tempurl = ENARGUS_CURRENT_URL;
+
+			if(nav == "search")
+				enargusChangeState(ENARGUS_LANG, "EnArgus Suche", ENARGUS_HTTP_BASE + "search/");
+			else if(nav == "data")
+				enargusChangeState(ENARGUS_LANG, "EnArgus FÃ¶rderdaten", ENARGUS_HTTP_BASE + "data/");
+			else if(nav == "wiki")
+				enargusChangeState(ENARGUS_LANG, "EnArgus Wiki", ENARGUS_HTTP_BASE + "wiki/");
+			else
+				enargusChangeState(ENARGUS_LANG, "EnArgus", ENARGUS_HTTP_BASE);
+
+			ENARGUS_CURRENT_URL = tempurl;
+
+			enargusWhereAmI();
+		}
+		
+		function enargusWhereAmI()
+		{
+			if(ENARGUS_CURRENT_URL == window.location.pathname + window.location.search)
+				return;
+		
+			var params = new URLSearchParams(window.location.search);
+			var tab = window.location.pathname.slice(0, -1);
+
+			if(tab.substring(0, 13) == "/pub/bscw.cgi") // legacy URL
+				tab = "bscw.cgi";
+			else
+				tab = tab.slice(tab.lastIndexOf("/") + 1);
+			
+			// console.log("enargusWhereAmI: " + window.location.pathname + "   " + tab + "   " + window.location.search);
+
+			var l = params.get("l");
+			if(l)
+				ENARGUS_QUERY_LANG = l;
+
+			switch(tab)
+			{
+				case 'search':
+					var q = params.get("q");
+					if(q)
+						document.getElementById("ENARGUS_searchinput").value = decodeURIComponent(q);
+
+					enargusSwitchTab('ENARGUS_TAB_Suchergebnisse');
+					enargusSearch();
+					break;
+				case 'detail':
+					var oid = params.get("id");
+					if(oid)
+					{
+						enargusSwitchTab('ENARGUS_TAB_Projektdetail');
+						enargusProjectDetail(oid);
+					}
+					break;
+				case 'map':
+					enargusSwitchTab('ENARGUS_TAB_Map');
+					enargusMap();
+					break;
+				case 'diagram':
+					enargusSwitchTab('ENARGUS_TAB_Diagram');
+					enargusDiagram();
+					break;
+				case 'data':
+					enargusSwitchTab('ENARGUS_TAB_FÃ¶rderdaten');
+					enargusData();
+					break;
+				case 'wiki':
+					var q = params.get("q");
+					// console.log(q);
+				
+					enargusSwitchTab('ENARGUS_TAB_Wiki');
+					if(q)
+						enargusWikiPage(q, 0);
+					else
+						enargusWikiPage("", 0);
+					break;
+				case 'bscw.cgi': // legacy URL
+					var oid = params.get("id");
+					var q = params.get("q");
+					var qw = params.get("qw");
+					var op = params.get("op");
+					var mode = params.get("mode");
+					if(oid)
+					{
+						enargusSwitchTab('ENARGUS_TAB_Projektdetail');
+						enargusProjectDetail(oid);
+					}
+					else if(q)
+					{
+						document.getElementById("ENARGUS_searchinput").value = decodeURIComponent(q);
+
+						enargusSwitchTab('ENARGUS_TAB_Suchergebnisse');
+						enargusSearch();
+					}
+					else if(qw)
+					{
+						enargusWikiPage(decodeURIComponent(qw), 0);
+					}
+					else if(op)
+					{
+						if(op == "Wiki.getwiki")
+						{
+							qw = window.location.pathname;
+							qw = decodeURIComponent(qw.slice(qw.lastIndexOf("/") + 1, -5));
+
+							enargusWikiPage(qw, 0);
+						}
+						else if(op == "enargus.eps2_getpub")
+						{
+							// TODO - probably cannot handle this
+						}
+					}
+					else if(mode)
+					{
+						if(mode == "2")
+						{
+							// TODO - handle article
+						}
+					}
+					break;
+				case 'main':
+				default:
+					var q = params.get("q");
+					if(q)
+					{
+						document.getElementById("ENARGUS_searchinput").value = decodeURIComponent(q);
+
+						enargusSwitchTab('ENARGUS_TAB_Suchergebnisse');
+						enargusSearch();
+					}
+					else
+						enargusSwitchTab('ENARGUS_TAB_Main');
+					break;
+			}
+		}
+		
+		function enargusSwitchTab(tabid)
+		{
+			var es = document.getElementById('extendedSearchTrigger');
+
+			es.hidden = (tabid != 'ENARGUS_TAB_Suchergebnisse');
+
+			if(tabid == ENARGUS_TAB)
+				return;
+
+			var curtab = document.getElementById(ENARGUS_TAB);
+			var newtab = document.getElementById(tabid);
+
+			switch(tabid)
+			{
+				case 'ENARGUS_TAB_Main':
+					enargusSwitchHeader('ENARGUS_HEADER_Suche');
+					break;
+				case 'ENARGUS_TAB_Suchergebnisse':
+					enargusSwitchHeader('ENARGUS_HEADER_Suche');
+					break;
+				case 'ENARGUS_TAB_Projektdetail':
+					enargusSwitchHeader('ENARGUS_HEADER_Suche');
+					break;
+				case 'ENARGUS_TAB_Map':
+					enargusSwitchHeader('ENARGUS_HEADER_Suche');
+					break;
+				case 'ENARGUS_TAB_Diagram':
+					enargusSwitchHeader('ENARGUS_HEADER_Suche');
+					break;
+				case 'ENARGUS_TAB_FÃ¶rderdaten':
+					enargusSwitchHeader('ENARGUS_HEADER_Daten');
+					break;
+				case 'ENARGUS_TAB_Wiki':
+					enargusSwitchHeader('ENARGUS_HEADER_Wiki');
+					break;
+			}
+
+			curtab.hidden = true;
+			newtab.hidden = false;
+
+			ENARGUS_TAB = tabid;
+		}
+
+		function enargusShowMenu(menu)
+		{
+			var menus = document.getElementById('ENARGUS_MENUS');
+			
+			for(var d of menus.getElementsByTagName("div"))
+				d.classList.add('collapse');
+			
+			if(menu != null)
+			{
+				for(var d of menus.getElementsByTagName("div"))
+				{
+					if(d.id == menu)
+						d.classList.remove('collapse');
+				}
+			}
+			// console.log("enargusShowMenu: " + menu);
+		}
+
+		function enargusHideMenu()
+		{
+			enargusShowMenu(null);
+		}
+
+		function enargusDoSearch(str)
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput");
+
+			searchinput.value = str;
+			enargusSearch();
+		}
+
+		function enargusSearchRecommendation()
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput");
+
+			enargusCacheRequest("quick", "enargus.ontology?query=" + encodeURIComponent(searchinput.value) + "&lang=" + ENARGUS_QUERY_LANG, function(result)
+			{
+				var quicksearchresult = document.getElementById("quickSearchResult");
+				var recommendationtypes =
+				{
+					"recomm": "Ãhnliche Begriffe",
+					"synonym": "Synonyme",
+					"hyponym": "Unterbegriffe",
+					"hypernym": "Oberbegriffe",
+					"content": "Besteht aus",
+					"class": "Sammelbegriffe"
+				};
+				var html = "";
+
+				for(const rt in recommendationtypes)
+				{
+					if(rt in result)
+					{
+						const recommendations = result[rt];
+
+						if(recommendations.length > 0)
+						{
+							html = html + '<ul class="list-unstyled mb-0">';
+							html = html + '<li class="category extra">' + recommendationtypes[rt] + '</li>';
+
+							for(const recommendation of recommendations)
+								html = html + '<li><a href="javascript:enargusDoSearch(\'' + recommendation.name + '\')">' + recommendation.name + '</a></li>';
+
+							html = html + '</ul>';
+						}
+					}
+				}
+
+				quicksearchresult.innerHTML = html;
+
+				if(html == "")
+					enargusHideMenu();
+				else
+					enargusShowMenu('quickSearchResult');
+			}, null);
+		}
+		
+		function enargusExtendedSearchSettings()
+		{
+			enargusShowMenu('accordionFilter');
+		}
+		
+		function enargusSearchOrder(order)
+		{
+			var sortmenu = document.getElementById('ENARGUS_SORT_MENU').getElementsByTagName('a');
+			var sortmenutitle = document.getElementById('dropdownSorting');
+
+			for(var a of sortmenu)
+			{
+				if(a.href.indexOf("'" + order + "'") > 0)
+				{
+					sortmenutitle.innerHTML = a.innerHTML;
+					a.classList.add('active');
+				}
+				else
+					a.classList.remove('active');
+			}
+
+			// console.log("enargusSearchOrder: " + order);
+
+			if(order == "")
+				delete ENARGUS_ADVANCED_SEARCH['sort'];
+			else
+				ENARGUS_ADVANCED_SEARCH['sort'] = order;
+
+			enargusSearch();
+		}
+		
+		function enargusSearchAddProjectResults(vorhaben)
+		{
+			var searchresult = document.getElementById("result-set");
+			var str_fi = enargusTranslateSpan("LANG_FÃ¶rderzeitraum");
+			var str_bs = enargusTranslateSpan("LANG_Bewilligte_Summe");
+			var str_st = enargusTranslateSpan("LANG_AusfÃ¼hrende_Stelle");
+			var str_fkz = enargusTranslateSpan("LANG_FÃ¶rderkennzeichen");
+
+			for(const project of vorhaben)
+			{
+				var item = document.createElement('div');
+
+				item.classList.add("result-item", "foerderprojekte-detailse");
+				
+				item.innerHTML =
+				'<a href="' + ENARGUS_HTTP_BASE + 'detail/?id=' + project.oid + '" onclick="enargusProjectDetail(' + project.oid + '); event.stopPropagation(); return false;"class="row link-block">' +
+					'<h4 class="col-12 highlight">' + (("v_thema" in project) ? project.v_thema : "-") + '</h4>' +
+					'<div class="category col-lg-3">' + str_fi + '</div>' +
+					'<div class="category-value col-lg-9">' + project.fi_von + ' ' + project.fi_ende + '</div>' +
+					'<div class="category col-lg-3">' + str_bs + '</div>' +
+					'<div class="category-value col-lg-9">' + new Intl.NumberFormat(ENARGUS_LANG_NUMBER_FORMAT, { style: 'currency', currency: 'EUR' }).format(project.fi_sumbew) + '</div>' +
+					'<div class="category col-lg-3">' + str_st + '</div>' +
+					'<div class="category-value col-lg-9">' + (("name_st" in project) ? project.name_st : "-") + ', ' + (("ort_st" in project) ? project.ort_st : "-") + '</div>' +
+					'<div class="category col-lg-3">' + str_fkz + '</div>' +
+					'<div class="category-value col-lg-9">' + project.fkz + '</div>' +
+				'</a>';
+
+				searchresult.appendChild(item);
+			}
+		}
+		
+		function enargusSearchResultInfiniteScroll()
+		{
+			if(ENARGUS_CURRENT_SEARCH_RESULT != null)
+			{
+				if(ENARGUS_CURRENT_SEARCH_RESULT.loaded < ENARGUS_CURRENT_SEARCH_RESULT.number)
+				{
+					var offset = ENARGUS_CURRENT_SEARCH_RESULT.loaded + 1;
+
+					var searchresult = document.getElementById("result-set");
+
+					if(searchresult.lastChild.className != "waiting")
+					{
+						var item = document.createElement('h1');
+						
+						item.className = "waiting";
+						item.innerHTML = '<svg class="waiting" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle class="waiting" cx="50" cy="50" r="45"/></svg> ' + enargusTranslateSpan('LANG_Lade_weitere_Projekte');
+
+						searchresult.appendChild(item);
+
+						enargusCacheRequest("search", ENARGUS_CURRENT_SEARCH_RESULT.query + "&first=" + offset, function(result)
+						{
+							if("vorhaben" in result)
+							{
+								searchresult.removeChild(searchresult.lastChild);
+
+								enargusSearchAddProjectResults(result.vorhaben);
+
+								ENARGUS_CURRENT_SEARCH_RESULT.loaded = ENARGUS_CURRENT_SEARCH_RESULT.loaded + result.vorhaben.length;
+							}
+						});
+					}
+				}
+			}
+		}
+		
+		function enargusSearchExecute(cache, extq, success)
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput").value;
+			var searchinputuri = encodeURIComponent(searchinput);
+			var advanced = "";
+
+			for(var a in ENARGUS_ADVANCED_SEARCH)
+			{
+				if(Array.isArray(a))
+				{
+					for(i of ENARGUS_ADVANCED_SEARCH[a])
+						advanced = advanced + "&" + a + "=" + encodeURIComponent(i);
+				}
+				else
+					advanced = advanced + "&" + a + "=" + encodeURIComponent(ENARGUS_ADVANCED_SEARCH[a]);
+			}
+
+			var querystring = "enargus.search?query=" + searchinputuri + "&lang=" + ENARGUS_QUERY_LANG + advanced + extq;
+
+			enargusCacheRequest(cache, querystring, function(result) { result["query"] = querystring; success(result); });
+		}
+
+		function enargusSearch()
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput").value;
+			var searchinputuri = encodeURIComponent(searchinput);
+			var doctitle = "EnArgus Suche nach '" + searchinput + "'";
+			var projectsfound = document.getElementById("ENARGUS_projectsfound");
+			var searchresult = document.getElementById("result-set");
+
+			projectsfound.innerHTML = '<svg class="waiting" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle class="waiting" cx="50" cy="50" r="45"/></svg>';
+
+			enargusChangeState(ENARGUS_LANG, doctitle, ENARGUS_HTTP_BASE + "search/?q=" + searchinputuri + ((ENARGUS_LANG != ENARGUS_QUERY_LANG) ? ("&l=" + ENARGUS_QUERY_LANG) : ""));
+
+			ENARGUS_CURRENT_SEARCH_RESULT = null;
+			searchresult.innerHTML = "";
+
+			enargusHideMenu();
+			enargusSwitchTab("ENARGUS_TAB_Suchergebnisse");
+
+			enargusSearchExecute("search", "&max=" + ENARGUS_MAX_SEARCH, function(result)
+			{
+				ENARGUS_CURRENT_SEARCH_RESULT = { number: 0, loaded: 0, query: result.query };
+
+				var wikiresultbox = document.getElementById("ENARGUS_wikiresultbox");
+				var projectsfound = document.getElementById("ENARGUS_projectsfound");
+				var html = "";
+
+				if("vorhaben" in result)
+				{
+					ENARGUS_CURRENT_SEARCH_RESULT.number = result.number;
+					ENARGUS_CURRENT_SEARCH_RESULT.loaded = result.vorhaben.length;
+
+					projectsfound.innerHTML = result.number;
+					enargusSearchAddProjectResults(result.vorhaben);
+				}
+
+				wikiresultbox.hidden = true;
+
+				enargusUpdateExtendedSearch(result);
+
+				if("wiki" in result)
+				{
+					if(result.wiki.length > 0)
+					{
+						enargusCacheRequest("wiki", "enargus.page?lang=" + ENARGUS_QUERY_LANG + "&mode=1&page=" + encodeURIComponent(result.wiki[0].name), function(wikiresult)
+						{
+							if("name" in wikiresult)
+							{
+								var pstart = wikiresult.html.indexOf("<p");
+								if(pstart > 0)
+								{
+									var pend = wikiresult.html.indexOf("</p>");
+									if(pend > pstart)
+									{
+										wikiresultbox.innerHTML = 
+										'<div>' +
+											'<a href="' + ENARGUS_HTTP_BASE + 'wiki/?q=' + encodeURIComponent(result.wiki[0].name) + '" onclick="enargusWikiPage(\'' + result.wiki[0].name + '\', 0); event.stopPropagation(); return false;">' +
+												'<span class="arrow-right float-right"></span>' +
+												'<h2 class="mb-3">' + wikiresult.name + '</h2>' +
+											'</a>' +
+											'<p>' + wikiresult.html.substring(pstart, pend + 4) + '</p>' +
+										'</div>';
+										wikiresultbox.hidden = false;
+									}
+								}
+							}
+						}, null);
+					}
+				}
+			});
+		}
+
+		function enargusUpdateExtendedSearch(result)
+		{
+			var menu = document.getElementById("accordionFilter");
+			if("facets" in result)
+			{
+				var html = "";
+				var idx = 0;
+
+				for(facet in result["facets"])
+				{
+					html = html +
+						'<div>' +
+						'<div class="header" id="headingES' + idx + '"><h5 class="mb-0">' +
+						'<button class="btn btn-link" data-toggle="collapse" data-target="#collapseES' + idx + '" aria-expanded="true" aria-controls="collapseES' + idx + '">' +
+						enargusTextTranslate(result["facets"][facet].label) +
+						'</button>' +
+						'</h5></div>' +
+						'<div id="collapseES' + idx + '" class="collapse" aria-labelledby="headingES' + idx + '" data-parent="#accordionFilter">' +
+						'<ul class="main list-unstyled mb-0">';
+
+					var keys = Object.keys(result["facets"][facet]["items"]);
+					
+					keys.sort();
+
+					for(range of keys)
+					{
+						html = html + '<li><input type="checkbox" value="' + range + '"' + (result["facets"][facet]["items"][range].checked ? " checked" : "") + '/>' + enargusTextTranslate(result["facets"][facet]["items"][range].label) + ' (' + result["facets"][facet]["items"][range].num + ')</li>'
+					}
+
+					html = html +'</ul></div></div>';
+
+					idx = idx + 1;
+				}
+
+				html = html +
+					'<div class="col-12 d-none d-lg-block text-right mt-3">' +
+					'<button class="btn btn-primary btn-sm" onclick="enargusClearExtendedSearch()" name="LANG_Auswahl_lÃ¶schen">' + enargusTranslateSpan('LANG_Auswahl_lÃ¶schen') + '</button>' +
+					'<button class="btn btn-primary btn-sm" onclick="enargusDoExtendedSearch()" name="LANG_Suchen">' + enargusTranslateSpan('LANG_Suchen') + '</button>' +
+					'</div>';
+
+				menu.innerHTML = html;
+			}
+			else
+				menu.innerHTML = "";
+		}
+
+		function enargusClearExtendedSearch()
+		{
+			var facets = document.getElementById("accordionFilter").getElementsByTagName("input");
+
+			for(input of facets)
+				input.checked = false;
+
+			enargusDoExtendedSearch();
+		}
+
+		function enargusDoExtendedSearch()
+		{
+			var values = [];
+		
+			enargusHideMenu();
+
+			var facets = document.getElementById("accordionFilter").getElementsByTagName("input");
+
+			for(input of facets)
+			{
+				if(input.checked)
+					values.push(input.value);
+			}
+
+			if(values.length > 0)
+				ENARGUS_ADVANCED_SEARCH["drilldown"] = drilldown = values;
+			else
+				delete ENARGUS_ADVANCED_SEARCH["drilldown"];
+
+			enargusSearch();
+		}
+
+		function enargusDetailArrowButton()
+		{
+			var arrowbutton = document.getElementById("ENARGUS_arrowbutton");
+			var dir = 0;
+
+			if(event.target.className == "arrow-left")
+				dir = -1;
+			else if(event.target.className == "arrow-right")
+				dir = 1;
+			else if(event.offsetX / arrowbutton.offsetWidth < 0.5)
+				dir = -1;
+			else
+				dir = 1;
+
+			ENARGUS_DETAIL_POSITION = ENARGUS_DETAIL_POSITION + dir;
+
+			if(ENARGUS_DETAIL_POSITION < 1)
+				ENARGUS_DETAIL_POSITION = 1;
+			else if(ENARGUS_DETAIL_POSITION > ENARGUS_DETAIL_MAXIMUM)
+				ENARGUS_DETAIL_POSITION = ENARGUS_DETAIL_MAXIMUM;
+
+			// console.log("enargusDetailArrowButton: " + dir);
+
+			enargusProjectDetail(-1, ENARGUS_DETAIL_POSITION);
+		}
+		
+		function enargusProjectDetail(oid)
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput").value;
+			var epd = document.getElementById("ENARGUS_Project_Detail");
+
+			epd.innerHTML = "";
+
+			// enargusSearchExecute("detail", "&id=" + encodeURIComponent(oid), function(result)
+			enargusCacheRequest("detail", "enargus.details?id=" + encodeURIComponent(oid) + "&lang=" + ENARGUS_QUERY_LANG, function(result)
+			{
+				var project = result.vorhaben;
+				var doctitle = "EnArgus Vorhaben '" + project.fkz + "' aus Suche nach '" + searchinput + "'";
+				var html = "";
+
+				enargusChangeState(ENARGUS_LANG, doctitle, ENARGUS_HTTP_BASE + "detail/?id=" + oid);
+				// console.log("enargusProjectDetail: " + doctitle);
+
+				var str_fi = enargusTranslateSpan("LANG_FÃ¶rderzeitraum");
+				var str_bs = enargusTranslateSpan("LANG_Bewilligte_Summe");
+				var str_st = enargusTranslateSpan("LANG_AusfÃ¼hrende_Stelle");
+				var str_fkz = enargusTranslateSpan("LANG_FÃ¶rderkennzeichen");
+				var str_lps = enargusTranslateSpan("LANG_Leistungsplansystematik");
+				var str_vbv = enargusTranslateSpan("LANG_Verbundvorhaben");
+				var str_zg = enargusTranslateSpan("LANG_Zuwendungsgeber");
+				var str_pt = enargusTranslateSpan("LANG_ProjekttrÃ¤ger");
+				var str_prg = enargusTranslateSpan("LANG_FÃ¶rderprogramm");
+				var str_kurz = enargusTranslateSpan("LANG_Kurzbeschreibung");
+				var str_info = enargusTranslateSpan("LANG_Weitere_Informationen");
+				var str_tiblink = enargusTranslateSpan("LANG_Abschlussbericht_TIB");
+
+				if('v_thema' in project)
+					html = html + '<h4 class="col-12">' + project.v_thema + '</h4>';
+
+				if(('fi_von' in project) && ('fi_ende' in project))
+					html = html + '<div class="category col-lg-4">' + str_fi + '</div>' +
+					'<div class="category-value col-lg-8">' + project.fi_von + ' ' + project.fi_ende + '</div>';
+
+				if('fi_sumbew' in project)
+					html = html + '<div class="category col-lg-4">' + str_bs + '</div>' +
+					'<div class="category-value col-lg-8">' + new Intl.NumberFormat(ENARGUS_LANG_NUMBER_FORMAT, { style: 'currency', currency: 'EUR' }).format(project.fi_sumbew) + '</div>';
+
+				if('name_st' in project)
+					html = html + '<div class="category col-lg-4">' + str_st + '</div>' +
+					'<div class="category-value col-lg-8">' +
+					'<a href="' + ENARGUS_HTTP_BASE + 'search/?q=' + encodeURIComponent(project.name_st) + '" ' +
+					'onclick="document.getElementById(\'ENARGUS_searchinput\').value=\'' + project.name_st + '\'; enargusSearch(); event.stopPropagation(); return false;">' + project.name_st + '</a>' +
+					'</div>';
+
+				if('fkz' in project)
+					html = html + '<div class="category col-lg-4">' + str_fkz + '</div>' +
+					'<div class="category-value col-lg-8">' + project.fkz + '</div>';
+
+				if('lp_text' in project)
+					html = html + '<div class="category col-lg-4">' + str_lps + '</div>' +
+					'<div class="category-value col-lg-8">' + project.lp_text + '</div>';
+
+				if('ver_bez' in project)
+				{
+					var vb = project.ver_bez;
+
+					if('ver_kz' in project)
+						vb = '<a href="' + ENARGUS_HTTP_BASE + 'search/?q=' + encodeURIComponent(project.ver_kz) + '" ' + 'onclick="document.getElementById(\'ENARGUS_searchinput\').value=\'' + project.ver_kz + '\'; enargusSearch(); event.stopPropagation(); return false;">' + vb + ' [' + project.ver_kz + ']</a>';		
+
+					html = html + '<div class="category col-lg-4">' + str_vbv + '</div>' +
+					'<div class="category-value col-lg-8">' + vb + '</div>';
+				}
+
+				if('v_ressort' in project)
+					html = html + '<div class="category col-lg-4">' + str_zg + '</div>' +
+					'<div class="category-value col-lg-8">' + project.v_ressort + '</div>';
+
+				if('v_pt_detail' in project)
+					html = html + '<div class="category col-lg-4">' + str_pt + '</div>' +
+					'<div class="category-value col-lg-8">' + project.v_pt_detail + '</div>';
+
+				if('v_forschsp_text' in project)
+					html = html + '<div class="category col-lg-4">' + str_prg + '</div>' +
+					'<div class="category-value col-lg-8">' + project.v_forschsp_text + '</div>';
+
+				if('auf_bez_pub' in project)
+					html = html + '<p class="col-12 mt-3">' + str_kurz + '</br></br>' + project.auf_bez_pub + '</p>';
+
+				if('fi_ende' in project)
+				{
+					var fi_ende = (new Date(project.fi_ende)).valueOf();
+					var now = Date.now().valueOf();
+
+					if(fi_ende < (now - 180*24*3600*1000))
+						html = html + '<p class="col-12 mt-3">' + str_info + '</br></br><a href="https://www.tib.eu/de/suchen/?tx_tibsearch_search[number]=' + project.fkz + '&tx_tibsearch_search[st]=ex&tx_tibsearch_search[searchspace]=tn&tx_tibsearch_search[DlicenseModel][0]=oa">â ' + str_tiblink+ '</a></p>';
+				}
+
+				epd.innerHTML = html;
+			}, null);
+
+			enargusHideMenu();
+			enargusSwitchTab("ENARGUS_TAB_Projektdetail");
+
+			return false;
+		}
+
+		function enargusMap()
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput").value;
+			var searchinputuri = encodeURIComponent(searchinput);
+
+			var item = document.createElement('h1');
+			
+			item.className = "waiting";
+			item.innerHTML = '<svg class="waiting" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle class="waiting" cx="50" cy="50" r="45"/></svg> ' + enargusTranslateSpan('LANG_Lade_weitere_Projekte');
+
+			// searchresult.appendChild(item);
+
+			enargusSearchExecute("map", "&only=vorhaben&max=999999&attrs=" + encodeURIComponent("oid,laengengrad_st,breitengrad_st,land_st,fi_sumbew"), function(result)
+			{
+				var project = result.vorhaben;
+				var doctitle = "EnArgus Karte der Suche nach '" + searchinput + "'";
+
+				enargusChangeState(ENARGUS_LANG, doctitle, ENARGUS_HTTP_BASE + "map/?q=" + searchinputuri);
+				// console.log("enargusMap: " + doctitle);
+
+				if(ENARGUS_MAP == null)
+				{
+					ENARGUS_MAP = L.map("ENARGUS_Map").setView([51.9, 10.3], 6);
+					ENARGUS_MAP.attributionControl.setPrefix('Projektdaten &copy <a href="https://www.energieforschung.de/impressum">BMWK</a>');
+					var wmsLayer = L.tileLayer.wms("https://sgx.geodatenzentrum.de/wms_topplus_web_open", {
+						layers: "web_grau",
+						format: "image/png",
+						transparent: true,
+						attribution:  'Karte &copy Bundesamt fÃ¼r Kartographie und GeodÃ¤sie 2017 (<a href="https://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf">Quellen</a>)'
+					}).addTo(ENARGUS_MAP);
+
+					ENARGUS_MAP_LAYERS = L.layerGroup().addTo(ENARGUS_MAP);
+				}
+
+				ENARGUS_MAP_LAYERS.clearLayers();
+
+				for(const project of result.vorhaben)
+				{
+					if(("breitengrad_st" in project) && ("laengengrad_st" in project))
+						L.marker([project.breitengrad_st, project.laengengrad_st]).addTo(ENARGUS_MAP_LAYERS);
+				}
+			}, null);
+
+			enargusHideMenu();
+			enargusSwitchTab("ENARGUS_TAB_Map");
+
+			return false;
+		}
+
+		function enargusDiagram()
+		{
+			var searchinput = document.getElementById("ENARGUS_searchinput").value;
+			var searchinputuri = encodeURIComponent(searchinput);
+
+			enargusSearchExecute("diagram", "&only=vorhaben&max=999999&attrs=" + encodeURIComponent("oid,land_st,fi_sumbew"), function(result)
+			{
+				var diagram = document.getElementById("ENARGUS_Diagram");
+				var project = result.vorhaben;
+				var doctitle = "EnArgus Diagramm der Suche nach '" + searchinput + "'";
+				var laender = { };
+				var landkeys = [ ];
+
+				enargusChangeState(ENARGUS_LANG, doctitle, ENARGUS_HTTP_BASE + "diagram/?q=" + searchinputuri);
+				// console.log("enargusMap: " + doctitle);
+
+				for(const project of result.vorhaben)
+				{
+					if("land_st" in project)
+					{
+						var m = 0;
+
+						if("fi_sumbew" in project)
+							m = project['fi_sumbew'];
+
+						if(!isNaN(m) && (m > 0))
+						{
+							if(!(project['land_st'] in laender))
+								laender[project['land_st']] = m;
+							else
+								laender[project['land_st']] = laender[project['land_st']] + m;
+						}
+					}
+				}
+
+				for(land in laender)
+				{
+					laender[land] = laender[land] / 1000000;
+					landkeys.push(land);
+				}
+
+				landkeys.sort(function(a, b)
+				{
+					if(laender[a] < laender[b])
+						return -1;
+					if(laender[a] > laender[b])
+						return 1;
+					else
+						return 0;
+				});
+			
+				var html = "<p>" + enargusTranslateSpan('LANG_Mittelabfluss') + " " + enargusTranslateSpan('LANG_in_Millionen_Euro') + "</p>";
+
+				const yoffset = 30
+				var ypos = 10;
+				var svg = "";
+				var maxlen = 0;
+				var scale = 100;
+				var unit = 100;
+				var increment = 100;
+
+				for(land in laender)
+					maxlen = Math.max(maxlen, laender[land]);
+
+				if(maxlen < 3)
+				{
+					scale = 200;
+					unit = 100;
+				}
+				else if(maxlen < 8)
+				{
+					scale = 100;
+					unit = 100;
+				}
+				else if(maxlen < 16)
+				{
+					scale = 50;
+					unit = 50;
+				}
+				else if(maxlen < 40)
+				{
+					scale = 20;
+					unit = 100;
+				}
+				else if(maxlen < 80)
+				{
+					scale = 10;
+					unit = 100;
+				}
+				else if(maxlen < 400)
+				{
+					scale = 2;
+					unit = 100;
+				}
+				else if(maxlen < 800)
+				{
+					scale = 1;
+					unit = 100;
+				}
+				else if(maxlen < 1600)
+				{
+					scale = 0.5;
+					unit = 50;
+				}
+				else if(maxlen < 4000)
+				{
+					scale = 0.2;
+					unit = 50;
+				}
+				else if(maxlen < 8000)
+				{
+					scale = 0.1;
+					unit = 50;
+				}
+				else if(maxlen < 16000)
+				{
+					scale = 0.05;
+					unit = 50;
+				}
+				else
+				{
+					scale = 0.01;
+					unit = 100;
+				}
+
+				increment = unit / scale;
+
+				for(land of landkeys)
+				{
+					var xpos = 200;
+					
+					svg = svg + '<text x="2" y="' + (ypos + 16) + '" font-family="Verdana" font-size="14">' + land + '</text>';
+
+					var w = laender[land];
+					var color = "#5899DA";
+
+					svg = svg + '<rect x="' + xpos + '" y="' + ypos + '" width="' + (w * scale) + '" height="20" fill="' + color + '"/>\n';
+					xpos = xpos + (w * scale);
+
+					xpos = xpos + 5;
+
+					svg = svg + '<text x="' + xpos + '" y="' + (ypos + 14) + '" font-family="Verdana" font-size="12">' + (Math.round((xpos - 205) / scale * 100) / 100) + '</text>';
+
+					ypos = ypos + yoffset;
+				}
+
+				var num = 0;
+
+				svg = svg + '<line x1="' + 200 + '" y1="' + 0 + '" x2="' + 200  + '" y2="' + (ypos + 5) + '" style="stroke:rgb(0,0,0);stroke-width:1" />';
+
+				for(var i = 0; i <= 800; i = i + unit)
+				{
+					svg = svg + '<line x1="' + (200 + i) + '" y1="' + ypos + '" x2="' + (200 + i) + '" y2="' + (ypos + 5) + '" style="stroke:rgb(0,0,0);stroke-width:2" />';
+					svg = svg + '<text x="' + (200 + i) + '" y="' + (ypos + 20) + '" font-family="Verdana" font-size="14" text-anchor="middle">' + num + '</text>';
+
+					num = num + increment;
+				}
+
+				ypos = ypos + 20;
+
+				svg = '<svg viewBox="0 0 1100 ' + ypos + '" width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">\n' + svg;
+
+				svg = svg + '</svg>\n';
+
+					// console.log(svg);
+
+					html = html + svg;
+
+				diagram.innerHTML = html;
+
+			}, null);
+
+			enargusHideMenu();
+			enargusSwitchTab("ENARGUS_TAB_Diagram");
+
+			return false;
+		}
+
+		function enargusWikiForEachAttribute(element, fn)
+		{
+			for(var i = 0; i < element.attributes.length; i++)
+				fn(element.attributes[i].nodeName, element.attributes[i].nodeValue);
+		}
+
+		function enargusWikiForEachElementRecursive(dom, fn)
+		{
+			var resultdom = [];
+
+			for(var i = 0; i < dom.length; i++)
+			{
+				if(fn(dom[i]) == true)
+				{
+					dom[i].childNodes = enargusWikiForEachElementRecursive(dom[i].childNodes, fn);
+					resultdom.push(dom[i]);
+				}
+			}
+
+			return resultdom;
+		}
+
+		function enargusWikiGetHTMLRecursive(dom)
+		{
+			var text = "";
+
+			for(var i = 0; i < dom.length; i++)
+			{
+				switch(dom[i].nodeType)
+				{
+					case 1:
+						text = text + "<" + dom[i].nodeName;
+						if(dom[i].attributes.length > 0)
+						{
+							for(var ii = 0; ii < dom[i].attributes.length; ii++)
+								text = text + " " + dom[i].attributes[ii].nodeName + "=\"" + dom[i].attributes[ii].nodeValue + "\"";
+						}
+						text = text + ">";
+						if((dom[i].nodeName != "IMG") && (dom[i].nodeName != "BR"))
+							text = text + enargusWikiGetHTMLRecursive(dom[i].childNodes) + "</" + dom[i].nodeName + ">";
+						break;
+					case 3:
+						text = text + dom[i].data;
+						break;
+				}
+			}
+
+			return text;
+		}
+
+		function enargusWikiParse(html, linkfunction)
+		{
+			var rawwikidom = document.getElementById("ENARGUS_WIKI_PARSE_HELPER");
+			rawwikidom.innerHTML = html;
+			var synonyme = [];
+			var englisch = [];
+			var german = [];
+			var bilder = [];
+			var title = "";
+			
+			var finalwikidom = enargusWikiForEachElementRecursive(rawwikidom.childNodes, function(element)
+			{
+				if(element.nodeName == "A")
+				{
+					var newelement = document.createElement("SPAN");
+					newelement.innerHTML  = linkfunction(element);
+					element.parentNode.replaceChild(newelement, element);
+				}
+				else
+				{
+					switch(element.className)
+					{
+						case "wiki-titel":
+							break;
+						case "wiki-synonyme":
+							if(element.nodeName == "P")
+							{
+								enargusWikiForEachElementRecursive(element.childNodes, function(word)
+								{
+									if(word.nodeName == "SPAN")
+										synonyme.push(word.innerText);
+									return false;
+								});
+							}
+							break;
+						case "wiki-englisch":
+							if(element.nodeName == "P")
+							{
+								enargusWikiForEachElementRecursive(element.childNodes, function(word)
+								{
+									if(word.nodeName == "SPAN")
+										englisch.push(word.innerText);
+									return false;
+								});
+							}
+							break;
+						case "wiki-german":
+							if(element.nodeName == "P")
+							{
+								enargusWikiForEachElementRecursive(element.childNodes, function(word)
+								{
+									if(word.nodeName == "SPAN")
+										german.push(word.innerText);
+									return false;
+								});
+							}
+							break;
+						case "wiki-bild":
+							if(element.nodeName == "FIGURE")
+							{
+								var image_src = "";
+								var image_alt = "";
+								var image_width = -1;
+								var image_height = -1;
+								var image_title = "";
+
+								enargusWikiForEachElementRecursive(element.childNodes, function(figureelement)
+								{
+									if(figureelement.nodeName == "FIGCAPTION")
+										image_title = figureelement.innerText;
+									else if(figureelement.nodeName == "IMG")
+									{
+										enargusWikiForEachAttribute(figureelement, function(name, value)
+										{
+											switch(name)
+											{
+												case "src":
+													image_src = value;
+													break;
+												case "alt":
+													image_alt = value;
+													break;
+												case "width":
+													image_width = parseInt(value);
+													break;
+												case "height":
+													image_height = parseInt(value);
+													break;
+											}
+										});
+									}
+								});
+
+								bilder.push({
+									"title": image_title,
+									"src": image_src,
+									"alt": image_alt,
+									"width": image_width,
+									"height": image_height
+								});
+								return true;
+							}
+							break;
+						default:
+							return true;
+					}
+					return false;
+				}
+			});
+
+			return {
+				"title": title,
+				"content": enargusWikiGetHTMLRecursive(finalwikidom),
+				"synonyms": synonyme,
+				"translations": { "en": englisch, "de": german },
+				"images": bilder
+			};
+		}
+		
+		function enargusWikiAlphaMenu(letter)
+		{
+			var wikialphamenu = document.getElementById("ENARGUS_wikialphamenu");
+			var html = "";
+
+			wikialphamenu.innerHTML = "";
+
+			for(page in ENARGUS_WIKI_LIST[letter])
+				html = html + '<li><a href="' + ENARGUS_HTTP_BASE + 'wiki/?q=' + encodeURIComponent(page) + '" onclick="enargusWikiPage(\'' + page + '\', 0); event.stopPropagation(); return false;">' + page + '</a></li>';
+
+			wikialphamenu.innerHTML = html;
+
+			if(html == "")
+				enargusHideMenu();
+			else
+				enargusShowMenu('alphabet-content');
+		}
+		
+		function enargusWikiSearch()
+		{
+			var wikiinput = document.getElementById("ENARGUS_wikiinput");
+
+			enargusHideMenu();
+
+			var querystring = "enargus.search?query=" + wikiinput.value + "&lang=" + ENARGUS_QUERY_LANG + "&only=wiki";;
+
+			enargusCacheRequest("search", querystring, function(result)
+			{
+				if("wiki" in result)
+				{
+					if(result.wiki.length > 0)
+						enargusWikiPage(result.wiki[0].name, 0);
+				}
+			}, null);
+		
+		}
+		
+		function enargusDoWikiSearch(str)
+		{
+			var wikiinput = document.getElementById("ENARGUS_wikiinput");
+
+			wikiinput.value = str;
+			enargusWikiSearch();
+		}
+		
+		function enargusWikiRecommendation()
+		{
+			var wikiinput = document.getElementById("ENARGUS_wikiinput");
+
+			enargusCacheRequest("quick", "enargus.ontology?query=" + encodeURIComponent(wikiinput.value) + "&lang=" + ENARGUS_QUERY_LANG, function(result)
+			{
+				var quicksearchresult = document.getElementById("quickSearchResult");
+				var recommendationtypes =
+				{
+					"recomm": "Ãhnliche Begriffe",
+					"synonym": "Synonyme",
+					"hyponym": "Unterbegriffe",
+					"hypernym": "Oberbegriffe",
+					"content": "Besteht aus",
+					"class": "Sammelbegriffe"
+				};
+				var html = "";
+
+				for(const rt in recommendationtypes)
+				{
+					if(rt in result)
+					{
+						const recommendations = result[rt];
+
+						if(recommendations.length > 0)
+						{
+							html = html + '<ul class="list-unstyled mb-0">';
+							html = html + '<li class="category extra">' + recommendationtypes[rt] + '</li>';
+
+							for(const recommendation of recommendations)
+								html = html + '<li><a href="javascript:enargusDoWikiSearch(\'' + recommendation.name + '\')">' + recommendation.name + '</a></li>';
+
+							html = html + '</ul>';
+						}
+					}
+				}
+
+				quicksearchresult.innerHTML = html;
+
+				if(html == "")
+					enargusHideMenu();
+				else
+					enargusShowMenu('quickSearchResult');
+			}, null);
+		}
+		
+		function enargusWikiListUpdate(success)
+		{
+			if(ENARGUS_WIKI_LIST_LANG != ENARGUS_QUERY_LANG)
+			{
+				enargusCacheRequest("wikilist", "enargus.pagelist?lang=" + ENARGUS_QUERY_LANG , function(result)
+				{
+					ENARGUS_WIKI_LIST = new Array(26);
+					ENARGUS_WIKI_LIST.fill(null, 0, 26);
+
+					for(var i = 0; i < ENARGUS_WIKI_LIST.length; i = i + 1)
+						ENARGUS_WIKI_LIST[i] = new Object();
+
+					for(page of result)
+					{
+						var code = page.name.substr(0, 1).toUpperCase().charCodeAt(0);
+						var index = Math.max(65, Math.min(90, code)) - 65;
+
+						if((index + 65) == code) // ignore everything else
+							ENARGUS_WIKI_LIST[index][page.name] = page.oid;
+					}
+
+					success();
+				}, null);
+			}
+			else
+				success();
+		}
+		
+		function enargusWikiPage(page, oid)
+		{
+			var wikititle = document.getElementById("ENARGUS_wikititle");
+			var wikibody = document.getElementById("ENARGUS_wikibody");
+			var wikisynonyms = document.getElementById("ENARGUS_wikisynonyms");
+			var wikitranslations = document.getElementById("ENARGUS_wikitranslations");
+			var wikihistory = document.getElementById("ENARGUS_wikihistory");
+			var wikihistorytitle = document.getElementById("ENARGUS_wikihistorytitle");
+			var wikilangmenu = document.getElementById("ENARGUS_WIKI_LANG_MENU");
+			var wikiprojects = document.getElementById("ENARGUS_wikiprojects");
+			var wikimetadata = document.getElementById("ENARGUS_wikimetadata");
+			
+			var querystr = "";
+			var str = "";
+			var history = ""
+			
+			if(page == null)
+			{
+				var params = new URLSearchParams(window.location.search);
+
+				page = decodeURIComponent(params.get("q"));
+			}
+
+			if(oid != 0)
+			{
+				str ="&oid=" + oid;
+				querystr = "enargus.page?mode=1&page=" + oid;
+			}
+			else
+				querystr = "enargus.page?lang=" + ENARGUS_QUERY_LANG + "&mode=1&page=" + encodeURIComponent(page);
+
+			if((page == "") && (oid == 0))
+			{
+				wikihistorytitle.hidden = true;
+				wikimetadata.hidden = true;
+
+				enargusWikiListUpdate(function()
+				{
+					var html = "";
+
+					for(var letter = 0; letter < 26; letter = letter + 1)
+					{
+						html = html + "<h3>" + String.fromCharCode(65 + letter) + "</h3><ul>";
+						for(page in ENARGUS_WIKI_LIST[letter])
+							html = html + '<li><a href="' + ENARGUS_HTTP_BASE + 'wiki/?q=' + encodeURIComponent(page) + '" onclick="enargusWikiPage(\'' + page + '\', 0); event.stopPropagation(); return false;">' + page + '</a></li>';
+						html = html + "</ul>";
+					}
+
+					wikititle.innerHTML = "A - Z";
+					wikibody.innerHTML = html;
+				});
+			}
+			else
+			{
+				document.getElementById("ENARGUS_wikiinput").value = page;
+
+				wikimetadata.hidden = false;
+
+				for(h of ENARGUS_WIKI_HISTORY)
+				{
+					if(history.length > 0)
+						history = history + ", ";
+					history = history + '<a href="javascript:enargusWikiPage(\'' + h.page + '\', \'' + h.oid + '\')">' + h.page + '</a>';
+				}
+				
+				wikihistorytitle.hidden = (ENARGUS_WIKI_HISTORY.length == 0);
+				wikihistory.innerHTML = history;
+
+				for(var i = 0; i < ENARGUS_WIKI_HISTORY.length; i = i + 1)
+				{
+					if(ENARGUS_WIKI_HISTORY[i]["page"] == page)
+					{
+						ENARGUS_WIKI_HISTORY.splice(i, 1);
+						break;
+					}
+				}
+
+				wikihistorytitle.hidden = (ENARGUS_WIKI_HISTORY.length == 0);
+
+				ENARGUS_WIKI_HISTORY.push({'page': page, 'oid': oid});
+				
+				if(ENARGUS_WIKI_HISTORY.length > ENARGUS_MAX_WIKI_HISTORY_SIZE)
+					ENARGUS_WIKI_HISTORY.shift();
+
+				enargusChangeState(ENARGUS_LANG, "EnArgus Wiki '" + page + "'", ENARGUS_HTTP_BASE + "wiki/?q=" + encodeURIComponent(page) + str);
+
+				wikititle.innerHTML = "";
+				wikibody.innerHTML = "";
+
+				enargusCacheRequest("wiki", querystr, function(result)
+				{
+					if("html" in result)
+					{
+						var shtml = "";
+						var thtml = "";
+						var wiki = enargusWikiParse(result.html, function(node)
+						{
+							var namestr = node.href;
+							var pos = namestr.lastIndexOf("/");
+
+							if(pos >= 0)
+								namestr = namestr.substr(pos + 1);
+
+							return '<a href="' + ENARGUS_HTTP_BASE + 'wiki/?q=' + namestr + '" ' +
+									  'onclick="enargusWikiPage(\'' + decodeURIComponent(namestr) + '\', 0); event.stopPropagation(); return false;">' + node.innerHTML + '</a>';
+						});
+
+						wikititle.innerHTML = result.name;
+						wikibody.innerHTML = wiki.content;
+
+						for(syn of wiki.synonyms)
+						{
+							if(shtml.length > 0)
+								shtml = shtml + ", ";
+							shtml = shtml + syn;
+						}
+
+						if(shtml == "")
+							shtml = "-";
+
+						if("en" in wiki.translations)
+						{
+							for(trans of wiki.translations.en)
+							{
+								if(thtml.length > 0)
+									thtml = thtml + ", ";
+								thtml = thtml + trans;
+							}
+						}
+						else if("de" in wiki.translations)
+						{
+							for(trans of wiki.translations.de)
+							{
+								if(thtml.length > 0)
+									thtml = thtml + ", ";
+								thtml = thtml + trans;
+							}
+						}
+
+						if(thtml == "")
+							thtml = "-";
+						
+						wikisynonyms.innerHTML = shtml;
+						wikitranslations.innerHTML = thtml;
+
+						if("langinfo" in result)
+						{
+							if(Object.keys(result.langinfo).length > 1)
+							{
+								var curlang = LANG_TRANSLATIONS["name"][ENARGUS_LANG];
+								var html = "";
+
+								for(langcode in result.langinfo)
+								{
+									if(langcode in LANG_TRANSLATIONS["name"])
+									{
+										var loid = result.langinfo[langcode].oid;
+										html = html + '<a class="dropdown-item';
+										if(loid == oid)
+										{
+											html = html + " active";
+											curlang = LANG_TRANSLATIONS["name"][langcode];
+										}
+										html = html + '" href="javascript:enargusWikiPage(\'' + page + '\', \'' + loid + '\')">' + LANG_TRANSLATIONS["name"][langcode] + '</a>';
+									}
+								}
+
+								html = '<div class="d-none d-lg-inline-block"><div class="dropdown d-inline">' +
+										'<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + curlang + '</button>' +
+										'<div class="dropdown-menu" aria-labelledby="dropdownLanguage">' + html;
+
+								html = html + '</div></div></div>';
+
+								wikilangmenu.innerHTML = html;
+							}
+						}
+					}
+				}, null);
+
+				var querystring = "enargus.search?query=" + encodeURIComponent(page) + "&lang=" + ENARGUS_LANG + "&max=" + ENARGUS_MAX_SEARCH;
+
+				wikiprojects.innerHTML = "";
+
+				enargusCacheRequest("search", querystring, function(result)
+				{
+					if("vorhaben" in result)
+					{
+						var maxp = Math.min(result.number, 10);
+
+						if(maxp > 0)
+						{
+							var html = 
+								'<div>' +
+								'<a href="' + ENARGUS_HTTP_BASE + 'search/?q=' + encodeURIComponent(page) + '" ' +
+									  'onclick="document.getElementById(\'ENARGUS_searchinput\').value=\'' + page + '\'; enargusSearch(); event.stopPropagation(); return false;">' +
+								'<span class="arrow-right float-right"></span>' + 
+								'<h2 class="mb-3">' + enargusTranslateSpan('LANG_FÃ¶rderprojekte_zum_Thema') + '</h2>' +
+								'</a>' +
+								'<ul>';
+
+							for(var i = 0; i < maxp; i = i + 1)
+								html = html + '<li>' + result.vorhaben[i].v_thema + '</li>';
+
+							html = html + '</ul></div>';
+
+							wikiprojects.innerHTML = html;
+						}
+					}
+				}, null);
+			}
+
+			enargusHideMenu();
+			enargusSwitchTab("ENARGUS_TAB_Wiki");
+		}
+
+		function enargusDataMenu()
+		{
+			var datamenumobile = document.getElementById("ENARGUS_DATA_MENU_Mobile");
+			var datamenudesktop = document.getElementById("ENARGUS_DATA_MENU_Desktop");
+			var datalangmenu = document.getElementById("ENARGUS_DATA_LANG_MENU");
+			var mhtml = "";
+			var dhtml = "";
+			var idx = 0;
+
+			mhtml = mhtml + '<div>';
+			
+			for(topic of ENARGUS_DATA.unterthema)
+			{
+				var enarguslang = (topic.thema[ENARGUS_QUERY_LANG] === undefined) ? "en" : ENARGUS_QUERY_LANG;
+			
+				dhtml = dhtml + '<h3>' + topic.thema[enarguslang] + '</h3>';
+				mhtml = mhtml +
+					'<div class="header" id="headingData' + idx + '">' +
+						'<h5 class="mb-0">' +
+							'<button class="btn btn-link" data-toggle="collapse" data-target="#collapseData' + idx + '" aria-expanded="true" aria-controls="collapseData' + idx + '">' + topic.thema[enarguslang] + '</button>' +
+						'</h5>' +
+					'</div>';
+
+				dhtml = dhtml + '<ul>'; //  class="list-unstyled"
+
+				mhtml = mhtml + 
+					'<div id="collapseData' + idx + '" class="collapse" aria-labelledby="headingData' + idx + '" data-parent="#mobilen-nav">' +
+						'<ul class="list-unstyled mb-0">';
+
+				var subidx = 0;
+
+				for(subtopic of topic.unterthema)
+				{
+					var link = ENARGUS_HTTP_BASE + 'data/?q=' + idx + '&qs=' + subidx;
+					var click = 'enargusDataShow(' + idx + ',' + subidx + '); event.stopPropagation(); return false;';
+
+					if(subtopic.thema["de"] != "Gesamt")
+					{
+						dhtml = dhtml + '<li><a href="' + link + '" onclick="' + click + '">' + subtopic.thema[enarguslang] + '</a></li>';
+						mhtml = mhtml + '<li><a href="' + link + '" onclick="' + click + '">' + subtopic.thema[enarguslang] + '</a></li>';
+					}
+					subidx = subidx + 1;
+				}
+
+				dhtml = dhtml + '</ul>';
+
+				mhtml = mhtml + '</ul></div>';
+
+				idx = idx + 1;
+			}
+
+			mhtml = mhtml + '</div>';
+
+			datamenudesktop.innerHTML = dhtml;
+			datamenumobile.innerHTML = mhtml;
+/*
+			var langinfo = Object.keys(topic.thema);
+			var curlang = LANG_TRANSLATIONS["name"][ENARGUS_LANG];
+			var html = "";
+
+			for(langcode in langinfo)
+			{
+				if(langcode in LANG_TRANSLATIONS["name"])
+				{
+					// var loid = langinfo[langcode].oid;
+					html = html + '<a class="dropdown-item';
+//					if(loid == oid)
+//					{
+//						html = html + " active";
+//						curlang = LANG_TRANSLATIONS["name"][langcode];
+//					}
+					html = html + '" href="javascript:enargusDataShow(\'' + "xx" + '\', \'' + "xx" + '\')">' + LANG_TRANSLATIONS["name"][langcode] + '</a>';
+				}
+			}
+
+			html = '<div class="d-none d-lg-inline-block"><div class="dropdown d-inline">' +
+					'<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + curlang + '</button>' +
+					'<div class="dropdown-menu" aria-labelledby="dropdownLanguage">' + html;
+
+			html = html + '</div></div></div>';
+
+			datalangmenu.innerHTML = html;*/
+		}
+
+		function enargusDataShow(q, qs)
+		{
+			const colors = [ "#5899DA", "#E8743B", "#19A979", "#ED4A7B", "#945ECF", "#13A4B4", "#525DF4", "#BF399E", "#6C8893", "#EE6868", "#2F6497" ];
+			var datadiagram = document.getElementById("ENARGUS_DATA_Diagram");
+			
+			enargusLoadData(function()
+			{
+				var html = "";
+
+				if("unterthema" in ENARGUS_DATA)
+				{
+					if("unterthema" in ENARGUS_DATA.unterthema[q])
+					{
+						var enarguslang = (ENARGUS_DATA.unterthema[q].unterthema[qs].thema[ENARGUS_QUERY_LANG] === undefined) ? "en" : ENARGUS_QUERY_LANG;
+
+						html = "<p>" + enargusTranslateSpan('LANG_Mittelabfluss') + " " + enargusTranslateSpan('LANG_in_Millionen_Euro') + ": " + ENARGUS_DATA.unterthema[q].unterthema[qs].thema[enarguslang] + "</p>";
+						var top = ENARGUS_DATA.unterthema[q].unterthema[qs];
+
+						const yoffset = 30
+						var ypos = 10;
+						var svg = "";
+						var maxlen = 0;
+						var scale = 100;
+						var unit = 100;
+						var increment = 100;
+						
+						var yearmax = 1970;
+						var yearmin = 1970;
+
+						for(var year = 2050; year >= 1970; year = year - 1)
+						{
+							var len = 0;
+
+							if("unterthema" in top)
+							{
+								for(sub of top.unterthema)
+								{
+									if("mittelabfluss" in sub)
+									{
+										if(year.toString() in sub.mittelabfluss)
+										{
+											len = len + (sub.mittelabfluss[year] / 1000000.0);
+											yearmin = year;
+											yearmax = Math.max(year, yearmax);
+										}
+									}
+								}
+							}
+							else
+							{
+								if("mittelabfluss" in top)
+								{
+									if(year.toString() in top.mittelabfluss)
+									{
+										len = len + (top.mittelabfluss[year] / 1000000.0);
+										yearmin = year;
+											yearmax = Math.max(year, yearmax);
+									}
+								}
+							}
+							maxlen = Math.max(maxlen, len);
+						}
+
+						if(maxlen < 5)
+						{
+							scale = 200;
+							unit = 100;
+							increment = 0.5;
+						}
+						else if(maxlen < 10)
+						{
+							scale = 100;
+							unit = 100;
+							increment = 1;
+						}
+						else if(maxlen < 20)
+						{
+							scale = 50;
+							unit = 50;
+							increment = 1;
+						}
+						else if(maxlen < 50)
+						{
+							scale = 20;
+							unit = 100;
+							increment = 5;
+						}
+						else if(maxlen < 100)
+						{
+							scale = 10;
+							unit = 100;
+							increment = 10;
+						}
+						else if(maxlen < 200)
+						{
+							scale = 5;
+							unit = 50;
+							increment = 20;
+						}
+						else if(maxlen < 500)
+						{
+							scale = 2;
+							unit = 100;
+							increment = 50;
+						}
+						else if(maxlen < 1000)
+						{
+							scale = 1;
+							unit = 50;
+							increment = 100;
+						}
+						else
+						{
+							scale = 0.5;
+							unit = 100;
+							increment = 200;
+						}
+
+						var coloffset = 0;
+
+						for(var year = yearmax; year >= yearmin; year = year - 1)
+						{
+							var xpos = 50;
+							
+							coloffset = 0;
+
+							svg = svg + '<text x="2" y="' + (ypos + 16) + '" font-family="Verdana" font-size="16">' + year + '</text>';
+
+							if("unterthema" in top)
+							{
+								for(sub of top.unterthema)
+								{
+									if("mittelabfluss" in sub)
+									{
+										var w = (sub.mittelabfluss[year] / 1000000.0);
+										var color = colors[coloffset % 11];
+
+										svg = svg + '<rect x="' + xpos + '" y="' + ypos + '" width="' + (w * scale) + '" height="20" fill="' + color + '"/>\n';
+										xpos = xpos + (w * scale);
+										coloffset = coloffset + 1;
+									}
+								}
+							}
+							else
+							{
+								if("mittelabfluss" in top)
+								{
+									var w = (top.mittelabfluss[year] / 1000000.0);
+									var color = colors[coloffset % 11];
+
+									svg = svg + '<rect x="' + xpos + '" y="' + ypos + '" width="' + (w * scale) + '" height="20" fill="' + color + '"/>\n';
+									xpos = xpos + (w * scale);
+								}
+							}
+
+							xpos = xpos + 5;
+
+							svg = svg + '<text x="' + xpos + '" y="' + (ypos + 14) + '" font-family="Verdana" font-size="12">' + (Math.round((xpos - 55) / scale * 100) / 100) + '</text>';
+
+							ypos = ypos + yoffset;
+						}
+
+						var num = 0;
+
+						svg = svg + '<line x1="' + 50 + '" y1="' + 0 + '" x2="' + 50  + '" y2="' + (ypos + 5) + '" style="stroke:rgb(0,0,0);stroke-width:1" />';
+
+						for(var i = 0; i <= 1000; i = i + unit)
+						{
+							svg = svg + '<line x1="' + (50 + i) + '" y1="' + ypos + '" x2="' + (50 + i) + '" y2="' + (ypos + 5) + '" style="stroke:rgb(0,0,0);stroke-width:2" />';
+							svg = svg + '<text x="' + (50 + i) + '" y="' + (ypos + 20) + '" font-family="Verdana" font-size="14" text-anchor="middle">' + num + '</text>';
+
+							num = num + increment;
+						}
+
+						ypos = ypos + 40;
+						coloffset = 0;
+
+						if("unterthema" in top)
+						{
+							for(sub of top.unterthema)
+							{
+								var color = colors[coloffset % 11];
+								svg = svg + '<rect x="2" y="' + ypos + '" width="20" height="20" fill="' + color + '"/>\n';
+								svg = svg + '<text x="32" y="' + (ypos + 16) + '" font-family="Verdana" font-size="16">' + sub.thema[enarguslang] + '</text>';
+								ypos = ypos + yoffset;
+								coloffset = coloffset + 1;
+							}
+
+							ypos = ypos + 20;
+						}
+
+						svg = '<svg viewBox="0 0 1100 ' + ypos + '" width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">\n' + svg;
+
+						svg = svg + '</svg>\n';
+					}
+
+					// console.log(svg);
+
+					html = html + svg;
+				}
+
+				datadiagram.innerHTML = html;
+			});
+		}
+	
+		function enargusLoadData(success)
+		{
+			if(1) // ENARGUS_DATA == null)
+			{
+				var request = new XMLHttpRequest();
+				request.open('GET', "/bin/foerderdaten/bbef2023.json");
+				request.responseType = 'json';
+				request.timeout = ENARGUS_MAX_REQUEST_TIMEOUT;
+				request.onload = function()
+				{
+					ENARGUS_DATA = request.response;
+					success();
+				};
+				request.send();
+			}
+			else
+				success();
+		}
+	
+		function enargusData()
+		{
+			enargusLoadData(function() { enargusDataMenu(); });
+		}
+		
+		// <iframe src="/pub/20201117-1352-c468773/hypertree/wiki.html?subject=Elektrizit%c3%a4tserzeugung&max_depth=2" style="margin-top:10px;" class="wiki_onto" height="1000" width="691"></iframe>
+		
+		document.onreadystatechange = function(event)
+		{
+			if(document.readyState == "interactive")
+			{
+				enargusWhereAmI();
+
+				var articles = document.getElementById("ENARGUS_articles");
+				if(articles)
+				{
+					enargusJSONRequest("enargus.articlelist", function(articlelist)
+					{
+						var html = "";
+						var len = articlelist.length;
+						var offset = Date.now().valueOf() % len;
+						for(var i = 0; i < 4; i = i + 1)
+						{
+							var article = articlelist[(offset + i) % len];
+							html += "<div>" + article.name + "</div>";
+						}
+						articles.innerHTML = html;
+					}, null, null);
+				}
+
+				if(ENARGUS_BROWSER_LANG != ENARGUS_LANG)
+				{
+					enargusLanguage(ENARGUS_BROWSER_LANG);
+				}
+
+				window.addEventListener('scroll', function()
+				{
+					var totalheight = document.documentElement.scrollHeight;
+					var currenttop = document.documentElement.scrollTop;
+					var viewheight = document.documentElement.clientHeight;
+					if((totalheight - currenttop) < (viewheight * 5))
+						enargusSearchResultInfiniteScroll();
+				});
+			}
+		};
+
+		window.onpopstate = function(event)
+		{
+			// console.log("onpopstate: " + ENARGUS_CURRENT_URL + " " + window.location.pathname + window.location.search);
+			enargusWhereAmI();
+		};
+
+		window.onresize = function(event)
+		{
+			if(ENARGUS_MAP != null)
+				ENARGUS_MAP.invalidateSize();
+		};
+	</script>
+
+</head>
+
+<body class="foerderprojekte start-seite" onclick="enargusHideMenu()">
+
+<header>
+	<div id="ie-warning" class="text-invert text-center" name="LANG_IE11_Warnung">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<p>Microsoft Internet Explorer 11 wird von dieser Webseite nicht mehr unterstÃ¼tzt. / Microsoft Internet Explorer 11 is no longer supported by this website.</p>
+	</div>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+		<a class="navbar-brand" href="/" onclick="enargusGo(''); event.stopPropagation(); return false;">
+			<img class="logo" src="/bin/images/EnArgus-Logo.svg" alt="Logo">
+		</a>
+
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item active" id="ENARGUS_Nav_Suche">
+					<a class="nav-link foerderprojekte" href="/" onclick="enargusGo('main'); event.stopPropagation(); return false;" name="LANG_Suche">Suche<span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item" id="ENARGUS_Nav_FÃ¶rderdaten">
+					<a class="nav-link foerderdaten" href="/data/" onclick="enargusGo('data'); event.stopPropagation(); return false;" name="LANG_FÃ¶rderdaten">FÃ¶rderdaten</a>
+				</li>
+				<li class="nav-item" id="ENARGUS_Nav_Wiki">
+					<a class="nav-link wiki" href="/wiki/" onclick="enargusGo('wiki'); event.stopPropagation(); return false;" name="LANG_Wiki">Wiki</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="navbar-right">
+			<button id="main-nav-toggle" class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<svg xmlns="http://www.w3.org/2000/svg" width="31" height="19" viewBox="0 0 31 19">
+					<g id="Menue" transform="translate(-207 -54)">
+						<rect width="31" height="3" rx="1.5" transform="translate(207 54)" fill="#13235b"/>
+						<rect id="Rechteck_71" data-name="Rechteck 71" width="31" height="3" rx="1.5" transform="translate(207 62)" fill="#13235b"/>
+						<rect id="Rechteck_72" data-name="Rechteck 72" width="31" height="3" rx="1.5" transform="translate(207 70)" fill="#13235b"/>
+					</g>
+				</svg>
+			</button>
+
+			<span id="languages-trigger" class="navbar-text d-xxl-none" data-toggle="collapse" data-target="#languages">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24.275" viewBox="0 0 24 24.275">
+					<g transform="translate(-367 -21.725)">
+						<g transform="translate(367 22)" fill="#13235b" stroke="#fff" stroke-width="1">
+							<circle cx="12" cy="12" r="12" stroke="none"/>
+							<circle cx="12" cy="12" r="11.5" fill="none"/>
+						</g>
+						<g id="weltkugel-sprachauswahl_duenn" transform="translate(367 21.725)">
+							<path id="weltkugel-sprachauswahl_duenn-2" data-name="weltkugel-sprachauswahl_duenn" d="M12.284.01C12.235.01,12.2,0,12.157,0V.01C12.108.01,12.049,0,12,0a2.132,2.132,0,0,0-.245.01A12.077,12.077,0,0,0,.039,10.961C.01,11.3,0,11.647,0,12A12.013,12.013,0,0,0,12,24c.049,0,.108-.01.157-.01V24a2.263,2.263,0,0,0,.363-.029A11.987,11.987,0,0,0,12.284.01Zm8.853,5.833A11,11,0,0,1,23.01,11.52H17.137a30.288,30.288,0,0,0-.382-4.51,11.636,11.636,0,0,0,4.373-1.137C21.127,5.853,21.127,5.843,21.137,5.843Zm-.49-.657a12.072,12.072,0,0,1-4.078.873A11.171,11.171,0,0,0,14.608,1.3,10.981,10.981,0,0,1,20.647,5.186ZM8.01,11.51a28.45,28.45,0,0,1,.373-4.343c1,.059,2.059.1,3.127.1,1.441,0,2.9-.059,4.245-.167a29.2,29.2,0,0,1,.392,4.422H8.01Zm8.137.98a27.6,27.6,0,0,1-.382,4.373,56.2,56.2,0,0,0-7.382-.069,29.163,29.163,0,0,1-.373-4.3h8.137ZM12,.98c.088,0,.167.01.245.01,1.569.088,2.7,2.255,3.324,5.157a55.055,55.055,0,0,1-7.01.1,16.851,16.851,0,0,1,.539-2C9.618,2.755,10.539.98,12,.98Zm-2.422.284a8.411,8.411,0,0,0-1.4,2.667,17.864,17.864,0,0,0-.6,2.255c-3.52-.343-4.265-.941-4.265-.941A11.3,11.3,0,0,1,9.578,1.265ZM2.833,5.922A10.661,10.661,0,0,0,7.4,7.1a29.607,29.607,0,0,0-.373,4.412H1c.01-.157.01-.314.02-.461A10.862,10.862,0,0,1,2.833,5.922Zm-.118,12.01A10.442,10.442,0,0,1,1,12.5H7.029a30.141,30.141,0,0,0,.363,4.382A14.726,14.726,0,0,0,2.716,17.931Zm.6.833s1.029-.7,4.235-1.01a11.452,11.452,0,0,0,2.039,5A11.053,11.053,0,0,1,3.314,18.765Zm8.922,4.255c-.078,0-.157.01-.235.01-1.647,0-2.814-2.294-3.451-5.333a57.287,57.287,0,0,1,7.039.078,14.459,14.459,0,0,1-.539,1.98C14.549,21.225,13.657,22.951,12.235,23.02Zm2.382-.314a8.437,8.437,0,0,0,1.373-2.618,16.146,16.146,0,0,0,.588-2.216,13.588,13.588,0,0,1,4.108.9A11.1,11.1,0,0,1,14.618,22.706Zm2.127-5.745a30.245,30.245,0,0,0,.382-4.461H23.01a10.663,10.663,0,0,1-1.794,5.559A13.964,13.964,0,0,0,16.745,16.961Z" transform="translate(24 24) rotate(180)" />
+						</g>
+					</g>
+				</svg>
+			</span>
+
+			<span id="current-language" class="navbar-text">
+				<span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+						<path id="weltkugel-sprachauswahl_duenn" d="M12.284.01C12.235.01,12.2,0,12.157,0V.01C12.108.01,12.049,0,12,0a2.132,2.132,0,0,0-.245.01A12.077,12.077,0,0,0,.039,10.961C.01,11.3,0,11.647,0,12A12.013,12.013,0,0,0,12,24c.049,0,.108-.01.157-.01V24a2.263,2.263,0,0,0,.363-.029A11.987,11.987,0,0,0,12.284.01Zm8.853,5.833A11,11,0,0,1,23.01,11.52H17.137a30.288,30.288,0,0,0-.382-4.51,11.636,11.636,0,0,0,4.373-1.137C21.127,5.853,21.127,5.843,21.137,5.843Zm-.49-.657a12.072,12.072,0,0,1-4.078.873A11.171,11.171,0,0,0,14.608,1.3,10.981,10.981,0,0,1,20.647,5.186ZM8.01,11.51a28.45,28.45,0,0,1,.373-4.343c1,.059,2.059.1,3.127.1,1.441,0,2.9-.059,4.245-.167a29.2,29.2,0,0,1,.392,4.422H8.01Zm8.137.98a27.6,27.6,0,0,1-.382,4.373,56.2,56.2,0,0,0-7.382-.069,29.163,29.163,0,0,1-.373-4.3h8.137ZM12,.98c.088,0,.167.01.245.01,1.569.088,2.7,2.255,3.324,5.157a55.055,55.055,0,0,1-7.01.1,16.851,16.851,0,0,1,.539-2C9.618,2.755,10.539.98,12,.98Zm-2.422.284a8.411,8.411,0,0,0-1.4,2.667,17.864,17.864,0,0,0-.6,2.255c-3.52-.343-4.265-.941-4.265-.941A11.3,11.3,0,0,1,9.578,1.265ZM2.833,5.922A10.661,10.661,0,0,0,7.4,7.1a29.607,29.607,0,0,0-.373,4.412H1c.01-.157.01-.314.02-.461A10.862,10.862,0,0,1,2.833,5.922Zm-.118,12.01A10.442,10.442,0,0,1,1,12.5H7.029a30.141,30.141,0,0,0,.363,4.382A14.726,14.726,0,0,0,2.716,17.931Zm.6.833s1.029-.7,4.235-1.01a11.452,11.452,0,0,0,2.039,5A11.053,11.053,0,0,1,3.314,18.765Zm8.922,4.255c-.078,0-.157.01-.235.01-1.647,0-2.814-2.294-3.451-5.333a57.287,57.287,0,0,1,7.039.078,14.459,14.459,0,0,1-.539,1.98C14.549,21.225,13.657,22.951,12.235,23.02Zm2.382-.314a8.437,8.437,0,0,0,1.373-2.618,16.146,16.146,0,0,0,.588-2.216,13.588,13.588,0,0,1,4.108.9A11.1,11.1,0,0,1,14.618,22.706Zm2.127-5.745a30.245,30.245,0,0,0,.382-4.461H23.01a10.663,10.663,0,0,1-1.794,5.559A13.964,13.964,0,0,0,16.745,16.961Z" transform="translate(24 24) rotate(180)" fill="#13235b"/>
+					</svg>
+				</span>
+
+				<span class="selected"><a href="javascript:enargusLanguage('de');">DE</a></span>
+				<span>|</span>
+				<span><a href="javascript:enargusLanguage('en');">EN</a></span>
+				<span>|</span>
+				<span><a href="javascript:enargusLanguage('es');">ES</a></span>
+				<span>|</span>
+				<span><a href="javascript:enargusLanguage('fr');">FR</a></span>
+				<span>|</span>
+				<span><a href="javascript:enargusLanguage('it');">IT</a></span>
+				<span>|</span>
+				<span><a href="javascript:enargusLanguage('pt');">PT</a></span>
+				
+			</span>
+
+			<span id="top-logos" class="navbar-text">
+				<a href="https://www.ptj.de"><img class="logo ptj" src="/bin/images/PtJ-Logo.svg" alt="PtJ Logo"></a>
+				<a href="https://www.bmwi.de"><img class="logo bmwi" src="/bin/images/bmwi_logo.svg" alt="BMWI Logo"></a>
+			</span>
+		</div>
+	</nav>
+
+	<span id="ENARGUS_HEADERS">
+	<span id="ENARGUS_HEADER_Suche">
+	
+	<div class="container">
+		<div class="row align-items-center">
+			<div id="mainSearch" class="input-group col-xl-6 col-xxl-6">
+				<input type="text" class="form-control" placeholder="Suche in FÃ¶rderprojekten..." aria-label="Suche in FÃ¶rderprojekten"
+				oninput="enargusSearchRecommendation()"
+				onkeyup="if(event.keyCode == 13) enargusSearch()"
+				id="ENARGUS_searchinput" name="LANG_Suche_in_FÃ¶rderprojekten">
+
+				<div class="input-group-append">
+					<button class="btn btn-primary" onclick="enargusSearch()">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23.268">
+							<g>
+								<path class="d-none" d="M 8 16.10000038146973 C 4.085050106048584 16.10000038146973 0.8999999761581421 12.69064998626709 0.8999999761581421 8.5 C 0.8999999761581421 4.30935001373291 4.085050106048584 0.8999999761581421 8 0.8999999761581421 C 11.91495037078857 0.8999999761581421 15.10000038146973 4.30935001373291 15.10000038146973 8.5 C 15.10000038146973 12.69064998626709 11.91495037078857 16.10000038146973 8 16.10000038146973 Z" stroke="none"/>
+								<path d="M 8 1.800000190734863 C 4.581310272216797 1.800000190734863 1.800000190734863 4.805609703063965 1.800000190734863 8.5 C 1.800000190734863 12.19438934326172 4.581310272216797 15.19999980926514 8 15.19999980926514 C 11.4186897277832 15.19999980926514 14.19999980926514 12.19438934326172 14.19999980926514 8.5 C 14.19999980926514 4.805609703063965 11.4186897277832 1.800000190734863 8 1.800000190734863 M 8 0 C 12.41827964782715 0 16 3.805580139160156 16 8.5 C 16 13.19441986083984 12.41827964782715 17 8 17 C 3.581720352172852 17 0 13.19441986083984 0 8.5 C 0 3.805580139160156 3.581720352172852 0 8 0 Z" stroke="none" fill="#fff"/>
+							</g>
+							<rect width="12.768" height="2.736" transform="translate(13.972 12.306) rotate(45)" fill="#fff"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<div class="extendedSearchWrapper col-12 col-xl-3 col-xxl-2">
+				<a id="extendedSearchTrigger" class="" href="" onclick="enargusExtendedSearchSettings(); event.stopPropagation(); return false;">
+					<span name="LANG_Erweiterte_Suche">Erweiterte Suche</span>
+					<span class="arrow-down"></span>
+					<span class="arrow-right"></span>
+				</a>
+			</div>
+
+			<div class="col-xxl-4">
+				<div class="filter-details">
+					<span class="category">Synonyme:</span> Wasserkraftanlage<br />
+					<span class="category">Bundesland:</span> Mecklenburg-Vorpommern, Nordrhein-Westfalen<br />
+					<span class="category">FÃ¶rdersumme:</span> 200.000 - 500.000 EUR<br />
+					<span class="category">Zeitraum:</span> ab 2020, 2010-2019<br />
+					<span class="category">Zuwendungsgeber:</span> BMWi
+				</div>
+			</div>
+
+		</div>
+	</div>
+	</span>
+	<span id="ENARGUS_HEADER_Daten" hidden>
+	<div class="container">
+	</div>
+	</span>
+	<span id="ENARGUS_HEADER_Wiki" hidden>
+	<div class="container">
+		<div class="row">
+			<div id="mainSearch" class="input-group col-lg-5 mt-lg-3">
+				<input type="text" class="form-control" placeholder="Suche im Wiki..." aria-label="Suche Wiki"
+				oninput="enargusWikiRecommendation()"
+				onkeyup="if(event.keyCode == 13) enargusWikiSearch()"
+				id="ENARGUS_wikiinput" name="LANG_Suche_im_Wiki">
+
+				<div class="input-group-append">
+					<button class="btn btn-primary" onclick="enargusWikiSearch()">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23.268">
+							<g>
+								<path class="d-none" d="M 8 16.10000038146973 C 4.085050106048584 16.10000038146973 0.8999999761581421 12.69064998626709 0.8999999761581421 8.5 C 0.8999999761581421 4.30935001373291 4.085050106048584 0.8999999761581421 8 0.8999999761581421 C 11.91495037078857 0.8999999761581421 15.10000038146973 4.30935001373291 15.10000038146973 8.5 C 15.10000038146973 12.69064998626709 11.91495037078857 16.10000038146973 8 16.10000038146973 Z" stroke="none"/>
+								<path d="M 8 1.800000190734863 C 4.581310272216797 1.800000190734863 1.800000190734863 4.805609703063965 1.800000190734863 8.5 C 1.800000190734863 12.19438934326172 4.581310272216797 15.19999980926514 8 15.19999980926514 C 11.4186897277832 15.19999980926514 14.19999980926514 12.19438934326172 14.19999980926514 8.5 C 14.19999980926514 4.805609703063965 11.4186897277832 1.800000190734863 8 1.800000190734863 M 8 0 C 12.41827964782715 0 16 3.805580139160156 16 8.5 C 16 13.19441986083984 12.41827964782715 17 8 17 C 3.581720352172852 17 0 13.19441986083984 0 8.5 C 0 3.805580139160156 3.581720352172852 0 8 0 Z" stroke="none" fill="#fff"/>
+							</g>
+							<rect width="12.768" height="2.736" transform="translate(13.972 12.306) rotate(45)" fill="#fff"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-12 col-lg-3 text-center mt-lg-3 d-lg-none">
+				<a href="" data-toggle="collapse" data-target="#accordionFilter" id="extendedSearchTrigger">
+					<span name="LANG_Wiki_von_A_B">Wiki von A-Z</span>
+
+					<span class="arrow-down d-none"></span>
+					<span class="arrow-right d-none d-lg-inline-block"></span>
+				</a>
+			</div>
+
+			<div class="col-lg-7 text-center d-none d-lg-block alphabet">
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(0);})">A</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(1);})">B</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(2);})">C</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(3);})">D</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(4);})">E</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(5);})">F</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(6);})">G</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(7);})">H</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(8);})">I</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(9);})">J</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(10);})">K</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(11);})">L</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(12);})">M</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(13);})">N</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(14);})">O</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(15);})">P</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(16);})">Q</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(17);})">R</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(18);})">S</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(19);})">T</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(20);})">U</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(21);})">V</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(22);})">W</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(23);})">X</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(24);})">Y</a>&nbsp;|
+				<a href="javascript:enargusWikiListUpdate(function(){ enargusWikiAlphaMenu(25);})">Z</a>
+			</div>
+	</div>
+	</div>
+	</span>
+	</span>
+
+	<span id="ENARGUS_MENUS">
+	<div id="languages" class="collapse text-invert">
+		<ul class="list-inline">
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('DE');">DE</a></li>
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('EN');">EN</a></li>
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('ES');">ES</a></li>
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('FR');">FR</a></li>
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('IT');">IT</a></li>
+			<li class="list-inline-item w-100"><a href="javascript:enargusLanguage('PT');">PT</a></li>
+		</ul>
+	</div>
+
+	<div id="accordionFilter" class="collapse" onclick="event.stopPropagation();">
+	</div>
+
+	<div id="alphabet-content" class="collapse">
+		<ul class="list-unstyled" id="ENARGUS_wikialphamenu">
+		</ul>
+	</div>
+
+	<div id="quickSearchResult" class="d-none">
+	</div>
+	</span>
+</header>
+
+<span id="ENARGUS_TABS">
+<span id="ENARGUS_TAB_Main">
+<div id="fontpage-background">
+	<div class="content container pt-3">
+		<div class="row">
+			<p class="col-lg-12 intro" name="LANG_EnArgus_Infotext">
+				Das Bundesministerium fÃ¼r Wirtschaft und Klimaschutz
+				stellt mit EnArgus ein Internet-Portal bereit,
+				das Ã¼ber laufende und abgeschlossene Forschungsvorhaben
+				rund um das Thema "Energieforschung" informiert.
+			</p>
+		</div>
+	</div>
+
+	<div id="info-graph" class="container">
+		<div class="row">
+			<div class="col-lg-3">
+				<img style="padding-top: 0; max-width: 208px;" src="/bin/images/5903_Projekte.svg" alt="Anzahl Projekte" />
+				<h3 name="LANG_T1">7.365 Projekte</h3>
+				<p name="LANG_B1">
+					wurden im Jahr 2022 im 7. Energieforschungsprogramm gefÃ¶rdert
+				</p>
+			</div>
+			<div class="col-lg-3">
+				<img style="padding-top: 0; max-width: 136px;" src="/bin/images/1Mrd.svg" alt="1 Milliarde Gesamtsumme" />
+				<h3 name="LANG_T2" style="padding-top: 35px;">1,486 Mrd. â¬</h3>
+				<p name="LANG_B2">
+					GesamtfÃ¶rdermittel in 2022 im 7. Energieforschungsprogramm
+				</p>
+			</div>
+			<div class="col-lg-3">
+				<img style="padding-top: 38px; max-width: 181px" src="/bin/images/25_Prozent.svg" alt="FÃ¶rdermittelvergleich 2014" />
+				<h3 name="LANG_T3" style="padding-top: 34px">75%</h3>
+				<p name="LANG_B3">
+					FÃ¶rdermittelanstieg im Vergleich zu 2014
+				</p>
+			</div>
+			<div class="col-lg-3">
+				<img style="padding-top: 75px; max-width: 198px" src="/bin/images/279_Mio.svg" alt="Eigenanteil" />
+				<h3 name="LANG_T4" style="padding-top: 35px;">390 Mio. â¬</h3>
+				<p name="LANG_B4">
+					Eigenanteil von Unternehmen an neu bewilligten Forschungs- und Entwicklungsprojekten im Jahr 2022
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+</span>
+<span id="ENARGUS_TAB_Suchergebnisse" hidden>
+<nav id="action-bar" class="container">
+	<a class="related-link d-lg-none mr-2" href="#" onclick="enargusSwitchTab('ENARGUS_TAB_Wiki');">
+		Wiki
+		<span class="arrow-right"></span>
+	</a>
+
+	<div class="action-bar-left">
+		<h2 class="section-title" name="LANG_FÃ¶rderprojekte">FÃ¶rderprojekte</h2>
+
+		<div class="section-text">
+			<span>(</span>
+			<span id="ENARGUS_projectsfound"></span>
+			<span name="LANG_gefunden">gefunden</span>)
+		</div>
+
+		<div class="actions">
+			<div class="dropdown d-inline">
+				<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownSorting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="LANG_Sortierung_nach_Relevanz">Sortierung nach Relevanz</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownSorting" id="ENARGUS_SORT_MENU">
+					<a class="dropdown-item active" href="javascript:enargusSearchOrder('')"><span name="LANG_Sortierung_nach_Relevanz">Sortierung nach Relevanz</span></a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byFkz')"><span name="LANG_FÃ¶rderkennzeichen">FÃ¶rderkennzeichen</span> (A-Z)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byFkz')"><span name="LANG_FÃ¶rderkennzeichen">FÃ¶rderkennzeichen</span> (Z-A)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byAusfuehr')"><span name="LANG_AusfÃ¼hrende_Stelle">AusfÃ¼hrende Stelle</span> (A-Z)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byAusfuehr')"><span name="LANG_AusfÃ¼hrende_Stelle">AusfÃ¼hrende Stelle</span> (Z-A)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byOrt')"><span name="LANG_Ort">Ort</span> (A-Z)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byOrt')"><span name="LANG_Ort">Ort</span> (Z-A)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_bySumbew')"><span name="LANG_Bewilligte_Summe">Bewilligte Summe</span> (9-0)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_bySumbew')"><span name="LANG_Bewilligte_Summe">Bewilligte Summe</span> (0-9)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byBeginn')"><span name="LANG_Beginn">Beginn</span> (2050-1970)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byBeginn')"><span name="LANG_Beginn">Beginn</span> (1970-2050)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byEnde')"><span name="LANG_Ende">Ende</span> (2050-1970)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byEnde')"><span name="LANG_Ende">Ende</span> (1970-2050)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('sort_byVerbund')"><span name="LANG_Verbundvorhaben">Verbundvorhaben</span> (A-Z)</a>
+					<a class="dropdown-item" href="javascript:enargusSearchOrder('-sort_byVerbund')"><span name="LANG_Verbundvorhaben">Verbundvorhaben</span> (Z-A)</a>
+				</div>
+			</div>
+
+			<button class="btn btn-secondary btn-sm" type="button" onclick="enargusDiagram()">
+				<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					 viewBox="0 0 19.9 16.8" style="height: 25px" xml:space="preserve">
+					<style type="text/css">
+						.st0{fill:#FFFFFF;}
+					</style>
+					<g>
+						<rect x="6.4" y="4.8" class="st0" width="1.3" height="7.5"/>
+						<rect x="10.2" y="2.7" class="st0" width="1.3" height="9.7"/>
+						<rect x="14" y="6.3" class="st0" width="1.3" height="6"/>
+						<polygon class="st0" points="18.3,14 3.8,14 3.8,2.2 2.6,2.2 2.6,15.3 3.8,15.3 3.8,15.2 18.3,15.2 	"/>
+					</g>
+				</svg>
+			</button>
+
+			<button class="btn btn-secondary btn-sm" type="button" onclick="enargusMap()">
+				<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					 viewBox="0 0 21.6 19.4" style="height: 25px" xml:space="preserve">
+					<style type="text/css">
+						.st0{fill:#FFFFFF;}
+					</style>
+					<g>
+						<polygon class="st0" points="8.9,11.2 2.9,8.9 0.8,15.8 7.5,18.2 	"/>
+						<g>
+							<path class="st0" d="M16.7,9.9c-0.8,1.6-2.4,3.6-2.4,3.6s-1.5-1.7-2.1-2.9l-2.3,0.8l-1.3,7.1l5.7-2.7l5.3,2.4l1.3-6.4L16.7,9.9z" />
+						</g>
+						<path class="st0" d="M14.3,1c-1.7,0-3.5,1.3-3.3,3.7c0.2,2.8,3.3,6.8,3.3,6.8s3-4.4,3.3-7C17.9,2.3,15.9,1,14.3,1z M14.3,6.5 c-1.2,0-2.1-1-2.1-2.1c0-1.2,1-2.1,2.1-2.1c1.2,0,2.1,1,2.1,2.1C16.5,5.6,15.5,6.5,14.3,6.5z" />
+					</g>
+				</svg>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<div class="content container">
+	<div class="row">
+		<div id="result-set" class="col-lg-7">
+		</div>
+
+		<div class="col-lg-5 d-none d-lg-block" id="ENARGUS_wikiresultbox">
+		</div>
+	</div>
+</div>
+</span>
+
+<span id="ENARGUS_TAB_Projektdetail" hidden>
+<nav id="action-bar" class="container">
+
+	<!-- a class="related-link d-lg-none mr-2" href="#" onclick="enargusSwitchHeader('ENARGUS_HEADER_Wiki');">
+		Wiki
+		<span class="arrow-right"></span>
+	</a -->
+
+	<div class="action-bar-left">
+		<h2 class="section-title" name="LANG_FÃ¶rderprojekte">FÃ¶rderprojekte</h2>
+
+		<div class="actions">
+			<!-- button class="btn btn-secondary btn-sm" type="button" id="ENARGUS_arrowbutton" onclick="enargusDetailArrowButton()">
+				<span class="arrow-left"></span>
+				Projekt 13 von 87
+				<span class="arrow-right"></span>
+
+			</button -->
+			<button class="btn btn-secondary btn-sm" type="button" onclick="history.back()">
+				<span class="arrow-left"></span>
+				<span name="LANG_zurÃ¼ck">zurÃ¼ck</span>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<div class="content container">
+	<div class="row">
+		<div id="details" class="col-lg-7">
+			<div class="row foerderprojekte-details" id="ENARGUS_Project_Detail">
+			</div>
+		</div>
+
+		<!--div class="col-lg-5 d-none d-lg-block">
+			<div id="related-box">
+				<a href="wikipage.php">
+					<span class="arrow-right float-right"></span>
+				</a>
+
+				<h2 class="mb-3">Wiki</h2>
+				<p>
+				Text
+				</p>
+			</div>
+		</div -->
+	</div>
+</div>
+</span>
+
+<span id="ENARGUS_TAB_Map" hidden>
+<nav id="action-bar" class="container">
+
+	<!-- a class="related-link d-lg-none mr-2" href="#" onclick="enargusSwitchHeader('ENARGUS_HEADER_Wiki');">
+		Wiki
+		<span class="arrow-right"></span>
+	</a -->
+
+	<div class="action-bar-left">
+		<h2 class="section-title" name="LANG_FÃ¶rderprojekte">FÃ¶rderprojekte</h2>
+
+		<div class="actions">
+			<!-- button class="btn btn-secondary btn-sm" type="button" id="ENARGUS_arrowbutton" onclick="enargusDetailArrowButton()">
+				<span class="arrow-left"></span>
+				Projekt 13 von 87
+				<span class="arrow-right"></span>
+
+			</button -->
+			<button class="btn btn-secondary btn-sm" type="button" onclick="history.back()">
+				<span class="arrow-left"></span>
+				<span name="LANG_zurÃ¼ck">zurÃ¼ck</span>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<div class="content container">
+	<div id="ENARGUS_Map" style="height:500px">
+	</div>
+</div>
+</span>
+
+<span id="ENARGUS_TAB_Diagram" hidden>
+<nav id="action-bar" class="container">
+
+	<!-- a class="related-link d-lg-none mr-2" href="#" onclick="enargusSwitchHeader('ENARGUS_HEADER_Wiki');">
+		Wiki
+		<span class="arrow-right"></span>
+	</a -->
+
+	<div class="action-bar-left">
+		<h2 class="section-title" name="LANG_FÃ¶rderprojekte">FÃ¶rderprojekte</h2>
+
+		<div class="actions">
+			<!-- button class="btn btn-secondary btn-sm" type="button" id="ENARGUS_arrowbutton" onclick="enargusDetailArrowButton()">
+				<span class="arrow-left"></span>
+				Projekt 13 von 87
+				<span class="arrow-right"></span>
+
+			</button -->
+			<button class="btn btn-secondary btn-sm" type="button" onclick="history.back()">
+				<span class="arrow-left"></span>
+				<span name="LANG_zurÃ¼ck">zurÃ¼ck</span>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<div class="content container">
+	<div id="ENARGUS_Diagram">
+	</div>
+</div>
+</span>
+
+<span id="ENARGUS_TAB_FÃ¶rderdaten" hidden>
+<nav id="action-bar" class="container">
+<!--	<a class="related-link d-lg-none mr-2" href="wikipage.php">-->
+<!--		FÃ¶rderdaten-->
+<!--		<span class="arrow-right"></span>-->
+<!--	</a>-->
+
+	<div class="action-bar-left">
+		<h2 class="section-title" name="LANG_FÃ¶rderdaten">FÃ¶rderdaten</h2>
+
+		<span id="ENARGUS_DATA_LANG_MENU">
+		</span>
+	</div>
+</nav>
+
+<div id="mobilen-nav" class="d-lg-none">
+	<span id="ENARGUS_DATA_MENU_Mobile">
+	</span>
+</div>
+
+<div class="content container">
+	<div class="row">
+		<div id="desktop-nav" class="col-lg-4 d-none d-lg-block">
+			<span id="ENARGUS_DATA_MENU_Desktop">
+			</span>
+		</div>
+
+		<div class="col-lg-8">
+			<h2 name="LANG_BBEF2023">Bundesbericht Energieforschung 2023</h2>
+			<p id="ENARGUS_DATA_Diagram">
+			</p>
+		</div>
+	</div>
+</div>
+</span>
+
+<span id="ENARGUS_TAB_Wiki" hidden>
+<nav id="action-bar" class="container">
+
+	<a class="related-link d-lg-none mr-2" href="">
+		<span name="LANG_FÃ¶rderprojekte">FÃ¶rderprojekte</span>
+		<span class="arrow-right"></span>
+	</a>
+
+	<div class="action-bar-left">
+		<h2 class="section-title">Wiki</h2>
+
+		<span id="ENARGUS_WIKI_LANG_MENU">
+		</span>
+
+		<!-- div class="d-none d-lg-inline-block">
+			<button data-href="wikionto.php" class="btn btn-secondary btn-sm" type="button">
+				Verwendete Begriffe /
+				Ontologie
+			</button>
+		</div -->
+	</div>
+</nav>
+
+<div class="content container">
+	<div class="d-none d-lg-block last-visited">
+		<h4><span id="ENARGUS_wikihistorytitle"><span name="LANG_Zuletzt_gesuchte_Wiki_EintrÃ¤ge">Zuletzt gesuchte Wiki-EintrÃ¤ge</span>: </span></h4><span id="ENARGUS_wikihistory"></span>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 order-lg-2">
+			<h2 id="ENARGUS_wikititle"></h2>
+			<p id="ENARGUS_wikibody"></p>
+		</div>
+
+		<div class="col-lg-2 order-lg-1 content-details">
+			<span id="ENARGUS_wikimetadata">
+			<h4><span name="LANG_Synonyme">Synonyme</span>:</h4>
+			<p id="ENARGUS_wikisynonyms">-</p>
+			<h4><span name="LANG_Ãbersetzungen">Ãbersetzungen</span>:</h4>
+			<p id="ENARGUS_wikitranslations">-</p>
+			</span>
+
+			<p></br></p>
+			<h5 name="LANG_wikilizenz">Die Artikel des EnArgus Wiki unterliegen der Lizenz</h5>
+			<p><span name="LANG_wikilizenzbez">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 3.0 Deutschland</span> (CC BY-SA 3.0 DE)</p>
+		</div>
+
+		<div id="ENARGUS_wikiprojects" class="col-lg-4 d-none d-lg-block order-lg-3">
+		</div>
+	</div>
+</div>
+</span>
+</span>
+
+<footer>
+	<div id="bottom-logos" class="ml-2">
+		<a href="https://www.ptj.de"><img src="/bin/images/PtJ-Logo.svg"></a>
+		<a href="https://www.bmwi.de"><img src="/bin/images/bmwi_logo.svg"></a>
+	</div>
+
+	<div class="text-invert">
+		<span class="float-right">
+			<a href="https://www.enargus.de/enargus.html" name="LANG_Ãber_EnArgus">Ãber EnArgus</a> |
+			<a href="https://www.ptj.de/impressum" name="LANG_Impressum">Impressum</a> |
+			<a href="https://www.ptj.de/datenschutz" name="LANG_Datenschutz">Datenschutz</a>
+		</span>
+	</div>
+</footer>
+
+<div id="scripts">
+	<script src="/bin/js/jquery-3.5.1.min.js"></script>
+	<script src="/bin/js/bootstrap.bundle.js"></script>
+	<script src="/bin/leaflet/leaflet.js"></script>
+	<script src="/bin/leaflet/leaflet.markercluster.js"></script>
+	<script src="/bin/js/enargus.js"></script>
+
+	<script type="text/javascript">
+		if(!(!!window.MSInputMethodContext && !!document.documentMode))
+			document.getElementById("ie-warning").style.display='none';
+	</script>
+</div>
+
+<span id="ENARGUS_WIKI_PARSE_HELPER" hidden></span>
+
+</body>
+
+</html>
