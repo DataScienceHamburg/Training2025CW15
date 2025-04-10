@@ -36,5 +36,6 @@ dependencies = [
     "langchain-google-genai>=2.1.2",
     "google-genai>=1.2.0",
     "pymupdf4llm>=0.0.21",
+    "streamlit>=1.44.1",
 ]
 
