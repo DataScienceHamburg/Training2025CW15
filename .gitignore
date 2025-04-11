@@ -2,3 +2,4 @@
 .venv/
 db/
 db_movies/
+*.db
