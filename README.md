@@ -4,6 +4,8 @@ Das sind die Trainingsunterlagen für den Kurs "Generative KI mit Python".
 
 ## Links
 
+- [Artikel zu tableRAG](https://www.linkedin.com/pulse/rag-f%C3%BCr-tabellen-die-n%C3%A4chste-evolutionsstufe-der-bert-gollnick-zsjxe/?trackingId=di%2FNay3mObJ7UqCMqL1ehw%3D%3D)
+
 ### Models
 
 - [Repository für die Übungen](https://github.com/DataScienceHamburg/Training2025CW15)
